@@ -1,0 +1,15 @@
+{
+  "name": "asm1",
+  "version": "1.0.0",
+  "description": "Quan ly nhan vien",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "Loc",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
