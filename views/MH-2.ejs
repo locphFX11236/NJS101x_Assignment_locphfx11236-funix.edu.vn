@@ -1,0 +1,30 @@
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/form.css">
+</head>
+
+<body>
+    <main class="card centered grid">
+        <div class="card__image">
+            <img src="<%= staff.imageUrl %>" alt="<%= staff.name %>" />
+            <h2>Họ và tên: <%= staff.name %></h2>
+        </div>
+        <div class="card__content">
+            <p>Mã nhân viên: <%= staff.id %></p>
+            <p>Ngày sinh: <%= staff.doB %></p>
+            <p>Ngày vào công ty: <%= staff.startDate %></p>
+            <p>Phòng ban: <%= staff.department %></p>
+            <p>Hệ số lương: <%= staff.salaryScale %></p>
+            <p>Số ngày nghỉ còn lại: <%= staff.annualLeave %></p>
+            <hr>
+            <form class="product-form" action="/edit-staff" method="POST">
+                <div class="form-control">
+                    <label for="imageUrl">Image URL</label>
+                    <input type="text" name="imageUrl" id="imageUrl" value="<%= staff.imageUrl %>">
+                    <input type="hidden" value="<%= staff.id %>" name="staffId">
+                </div>
+                <button class="btn" type="submit">Thay đổi ảnh cá nhân</button>
+            </form>
+        </div>
+    </main>
+
+<%- include('includes/end.ejs') %>

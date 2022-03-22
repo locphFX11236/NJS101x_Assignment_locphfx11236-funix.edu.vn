@@ -1,0 +1,31 @@
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/staff.css">
+</head>
+
+<body>
+    <% if (staffs.length > 0) { %>
+        <div class="grid">
+            <% for (let staff of staffs) { %>
+                <article class="card staff-item">
+                    <div class="card__image">
+                        <img src="<%= staff.imageUrl %>" alt="<%= staff.title %>">
+                    </div>
+                    <a class="card__content" href="/staff/<%= staff.id %>" class="btn">
+                        <p class="staff__description">
+                            <%= staff.name %>
+                        </p>
+                    </a>
+                    <div class="card__actions">
+                        <form action="/cart" method="post">
+                            <button class="btn" type="submit">Điểm danh</button>
+                            <input type="hidden" name="staffId" value="<%= staff.id %>">
+                        </form>
+                    </div>
+                </article>
+            <% } %>
+        </div>
+    <% } else { %>
+        <h1>No Staffs Found!</h1>
+    <% } %>
+
+<%- include('includes/end.ejs') %>
