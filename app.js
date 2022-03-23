@@ -3,8 +3,9 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const routes = require('./routes/routes');
 const rootDir = require('./util/path');
+const routes = require('./routes/routes');
+const covids = require('./routes/covid-19');
 const errorController = require('./controllers/error');
 
 const app = express();
@@ -24,9 +25,10 @@ app.use(bodyParser.urlencoded(
 app.use(express.static(path.join(
     rootDir,
     'public'
-))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css)
+))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js)
 
 app.use(routes);
+app.use(covids);
 
 app.use(errorController.get404); // Xử lý lổi 404
 

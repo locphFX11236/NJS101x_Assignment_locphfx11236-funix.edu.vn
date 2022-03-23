@@ -1,0 +1,45 @@
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/form.css">
+</head>
+
+<body>
+    <main class="centered grid">
+        <div class="card">
+            <form class="product-form" action="/post-vaccine" method="POST">
+                <h3 class="centered">Thông tin tiêm vaccin</h3>
+                <div class="form-control">
+                    <label for="ngayTiem">Ngày tiêm vaccin</label>
+                    <input type="text" name="ngayTiem" id="ngayTiem" placeholder="Nhập ngày tiêm">
+                </div>
+                <div class="form-control">
+                    <label for="loaiVaccine">Loại vaccin đã tiêm</label>
+                    <input type="text" name="loaiVaccine" id="loaiVaccine" placeholder="Nhập loại vaccine đã tiêm">
+                </div>
+                <input type="hidden" value="<%= staff.id %>" name="staffId">
+                <button class="btn" type="submit">Đăng kí thông tin tiêm vaccin</button>
+            </form>
+        </div>
+        <div class="card">
+            <form class="product-form" action="/post-xn" method="POST">
+                <h3 class="centered">Thông tin bệnh</h3>
+                <div class="form-control">
+                    <label for="xetNghiem">Kết quả xét nghiệm dương tính</label>
+                    <input type="hidden" value="<%= staff.id %>" name="staffId">
+                </div>
+                <button class="btn" type="submit">Đăng kí thông tin bệnh</button>
+            </form>
+        </div>
+        <div class="card">
+            <form class="product-form" action="/post-nd" method="POST">
+                <h3 class="centered">Thông tin thân nhiệt</h3>
+                <div class="form-control">
+                    <label for="nhietDo">Nhiệt Độ (oC)</label>
+                    <input type="text" name="nhietDo" id="nhietDo" value="37">
+                </div>
+                <input type="hidden" value="<%= staff.id %>" name="staffId">
+                <button class="btn" type="submit">Đăng kí thông tin thân nhiệt</button>
+            </form>
+        </div>
+    </main>
+
+<%- include('includes/end.ejs') %>

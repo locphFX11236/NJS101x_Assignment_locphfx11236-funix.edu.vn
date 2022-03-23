@@ -1,5 +1,6 @@
 <%- include('includes/head.ejs') %>
     <link rel="stylesheet" href="/css/staff.css">
+    <link rel="stylesheet" href="/css/form.css">
 </head>
 
 <body>
@@ -17,8 +18,11 @@
                     </a>
                     <div class="card__actions">
                         <form action="/cart" method="post">
-                            <button class="btn" type="submit">Điểm danh</button>
                             <input type="hidden" name="staffId" value="<%= staff.id %>">
+                            <button class="btn" type="submit">Điểm danh</button>
+                        </form>
+                        <form action="/covid/<%= staff.id %>" method="get">
+                            <button class="btn" type="submit">Thông tin covid-19</button>
                         </form>
                     </div>
                 </article>

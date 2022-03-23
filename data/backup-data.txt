@@ -11,7 +11,7 @@
     },
     {
         "id": "2",
-        "name": "AAAA",
+        "name": "BBBB",
         "doB": "2001-01-02",
         "salaryScale": 1,
         "startDate": "2021-02-02",
@@ -21,12 +21,132 @@
     },
     {
         "id": "3",
-        "name": "AAAA",
+        "name": "CCCC",
         "doB": "2001-03-03",
         "salaryScale": 1,
         "startDate": "2021-03-03",
         "department": "IT",
         "annualLeave": 1,
         "imageUrl": "https://phunugioi.com/wp-content/uploads/2020/10/hinh-anh-chibi-buon.jpg"
+    }
+]
+
+[
+    {
+        "id": "1",
+        "vaccin": [
+            {
+                "ngayTiem": "2021-01-01",
+                "loaiVaccin": "Fizer"
+            },
+            {
+                "ngayTiem": "2021-05-05",
+                "loaiVaccin": "Fizer"
+            }
+        ],
+        "duongTinh": [
+            { "ngay": "2021-01-01" },
+            { "ngay": "2021-01-03" }
+        ],
+        "nhietDo": [
+            {
+                "ngay": "2021-01-01",
+                "nhietDo": 37
+            },
+            {
+                "ngay": "2021-01-02",
+                "nhietDo": 38
+            },
+            {
+                "ngay": "2021-01-03",
+                "nhietDo": 37
+            },
+            {
+                "ngay": "2021-01-04",
+                "nhietDo": 37
+            },
+            {
+                "ngay": "2021-01-05",
+                "nhietDo": 37
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "vaccin": [
+            {
+                "ngayTiem": "2021-01-01",
+                "loaiVaccin": "Fizer"
+            },
+            {
+                "ngayTiem": "2021-05-05",
+                "loaiVaccin": "Fizer"
+            }
+        ],
+        "duongTinh": [
+            { "ngay": "2021-01-01" },
+            { "ngay": "2021-01-03" }
+        ],
+        "nhietDo": [
+            {
+                "ngay": "2021-01-01",
+                "nhietDo": 37
+            },
+            {
+                "ngay": "2021-01-02",
+                "nhietDo": 38
+            },
+            {
+                "ngay": "2021-01-03",
+                "nhietDo": 37
+            },
+            {
+                "ngay": "2021-01-04",
+                "nhietDo": 37
+            },
+            {
+                "ngay": "2021-01-05",
+                "nhietDo": 37
+            }
+        ]
+    },
+    {
+        "id": "3",
+        "vaccin": [
+            {
+                "ngayTiem": "2021-01-01",
+                "loaiVaccin": "Fizer"
+            },
+            {
+                "ngayTiem": "2021-05-05",
+                "loaiVaccin": "Fizer"
+            }
+        ],
+        "duongTinh": [
+            { "ngay": "2021-01-01" },
+            { "ngay": "2021-01-03" }
+        ],
+        "nhietDo": [
+            {
+                "ngay": "2021-01-01",
+                "nhietDo": 37
+            },
+            {
+                "ngay": "2021-01-02",
+                "nhietDo": 38
+            },
+            {
+                "ngay": "2021-01-03",
+                "nhietDo": 37
+            },
+            {
+                "ngay": "2021-01-04",
+                "nhietDo": 37
+            },
+            {
+                "ngay": "2021-01-05",
+                "nhietDo": 37
+            }
+        ]
     }
 ]
