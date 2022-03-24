@@ -11,19 +11,19 @@
                     <div class="card__image">
                         <img src="<%= staff.imageUrl %>" alt="<%= staff.title %>">
                     </div>
-                    <a class="card__content" href="/staff/<%= staff.id %>" class="btn">
+                    <a class="card__content" href="/staff/<%= staff._id %>" class="btn">
                         <p class="staff__description">
                             <%= staff.name %>
                         </p>
                     </a>
                     <div class="card__actions">
-                        <form action="/diemdanh/<%= staff.id %>" method="get">
+                        <form action="/diemdanh/<%= staff._id %>" method="get">
                             <button class="btn" type="submit">Điểm danh</button>
                         </form>
-                        <form action="/covid/<%= staff.id %>" method="get">
+                        <form action="/covid/<%= staff._id %>" method="get">
                             <button class="btn" type="submit">Thông tin covid-19</button>
                         </form>
-                        <form action="/salary/<%= staff.id %>" method="get">
+                        <form action="/salary/<%= staff._id %>" method="get">
                             <button class="btn" type="submit">Thông tin tính lương</button>
                         </form>
                     </div>

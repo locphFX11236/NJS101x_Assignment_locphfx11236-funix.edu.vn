@@ -6,22 +6,40 @@
     <main class="card centered grid">
         <div class="card__image">
             <img src="<%= staff.imageUrl %>" alt="<%= staff.name %>" />
-            <h2>Họ và tên: <%= staff.name %></h2>
+            <h1>Họ và tên: <%= staff.name %></h1>
         </div>
         <div class="card__content">
-            <p>Mã nhân viên: <%= staff.id %></p>
-            <p>Ngày sinh: <%= staff.doB %></p>
-            <p>Ngày vào công ty: <%= staff.startDate %></p>
-            <p>Phòng ban: <%= staff.department %></p>
-            <p>Hệ số lương: <%= staff.salaryScale %></p>
-            <p>Số ngày nghỉ còn lại: <%= staff.annualLeave %></p>
-            <hr>
             <form class="product-form" action="/edit-staff" method="POST">
                 <div class="form-control">
-                    <label for="imageUrl">Image URL</label>
-                    <input type="text" name="imageUrl" id="imageUrl" value="<%= staff.imageUrl %>">
-                    <input type="hidden" value="<%= staff.id %>" name="staffId">
+                    <label for="name">Họ và tên</label>
+                    <input type="text" name="name" id="name" value="<%= staff.name %>" readonly>
                 </div>
+                <div class="form-control">
+                    <label for="doB">Ngày sinh</label>
+                    <input type="text" name="doB" id="doB" value="<%= staff.doB %>" readonly>
+                </div>
+                <div class="form-control">
+                    <label for="startDate">Ngày vào công ty</label>
+                    <input type="text" name="startDate" id="startDate" value="<%= staff.startDate %>" readonly>
+                </div>
+                <div class="form-control">
+                    <label for="department">Phòng ban</label>
+                    <input type="text" name="department" id="department" value="<%= staff.department %>" readonly>
+                </div>
+                <div class="form-control">
+                    <label for="salaryScale">Hệ số lương</label>
+                    <input type="text" name="salaryScale" id="salaryScale" value="<%= staff.salaryScale %>" readonly>
+                </div>
+                <div class="form-control">
+                    <label for="annualLeave">Số ngày nghỉ còn lại</label>
+                    <input type="text" name="annualLeave" id="annualLeave" value="<%= staff.annualLeave %>" readonly>
+                </div>
+                <hr>
+                <div class="form-control">
+                    <label for="imageUrl">Link hình ảnh</label>
+                    <input type="text" name="imageUrl" id="imageUrl" value="<%= staff.imageUrl %>">
+                </div>
+                <input type="hidden" value="<%= staff._id %>" name="_id">
                 <button class="btn" type="submit">Thay đổi ảnh cá nhân</button>
             </form>
         </div>

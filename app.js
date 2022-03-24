@@ -9,6 +9,7 @@ const diemdanhs = require('./routes/diemdanh');
 const salarys = require('./routes/salary');
 const covids = require('./routes/covid-19');
 const errorController = require('./controllers/error');
+const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();
 
@@ -36,4 +37,6 @@ app.use(covids);
 
 app.use(errorController.get404); // Xử lý lổi 404
 
-app.listen(3000);
+mongoConnect(() => {
+    app.listen(3000);
+}); // Kết nối với mongodb

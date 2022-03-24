@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const mongodb = require('mongodb');
 
 const rootDir = require('../util/path');
+const getDb = require('../util/database').getDb;
 
 const p = path.join(
     rootDir,
@@ -21,7 +23,7 @@ const getStaffsFromFile = cb => {
 
 module.exports = class Thongtin {
     constructor(
-        id,
+        _id,
         imageUrl,
         name,
         doB,
@@ -30,7 +32,7 @@ module.exports = class Thongtin {
         department,
         annualLeave,
     ) {
-        this.id = id;
+        this._id = _id ? new mongodb.ObjectId(_id) : null;
         this.imageUrl = imageUrl;
         this.name = name;
         this.doB = doB;
@@ -40,28 +42,60 @@ module.exports = class Thongtin {
         this.annualLeave = annualLeave;
     }
 
-    static editImg(id, imageUrl) {
-        getStaffsFromFile(staffs => {
-            const staff = staffs.find(staffs => staffs.id === id);
-            const updatedStaff = [...staffs];
-            staff.imageUrl = imageUrl;
-            updatedStaff[staff] = this;
-            fs.writeFile(
-                p,
-                JSON.stringify(updatedStaff),
-                err => console.log(__dirname, "1", err)
-            );
-        });
+    save() {
+        const db = getDb();
+        let dbOp;
+        if (this._id) {
+            dbOp = db
+                .collection('staffs')
+                .updateMany(
+                    { _id: this._id },
+                    { $set: this }  
+                )
+            ;
+        } else {
+            dbOp = db
+                .collection('staffs')
+                .insertOne(this)
+            ;
+        }
+        return dbOp
+            .then(result => {
+                console.log(__dirname, "9", result);
+            })
+            .catch((error) => {
+                console.log(__dirname, "5", error);
+            })
+        ;
     }
 
-    static fetchAll(cb) {
-        getStaffsFromFile(cb);
+    static fetchAll() {
+        const db = getDb();
+        return db
+            .collection('staffs')
+            .find()
+            .toArray()
+            .then(staffs => {
+                return staffs;
+            })
+            .catch ((error) => {
+                console.log(__dirname, "7", error);
+            })
+        ;
     }
 
-    static findById(id, cb) {
-        getStaffsFromFile(staffs => {
-            const staff = staffs.find(staffs => staffs.id === id);
-            return cb(staff);
-        });
+    static findById(id) {
+        const db = getDb();
+        return db
+          .collection('staffs')
+          .find({ _id: new mongodb.ObjectId(id) })
+          .next()
+          .then(staffs => {
+            return staffs;
+          })
+          .catch(err => {
+            console.log(__dirname, "8", error);
+          })  
+        ;
     }
 }
