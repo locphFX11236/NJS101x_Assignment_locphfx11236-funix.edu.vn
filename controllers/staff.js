@@ -1,8 +1,8 @@
-const Thongtin = require('../models/thongtin');
+const Staff = require('../models/staff');
 
 exports.getIndex = (req, res, next) => {
-    Thongtin
-        .fetchAll()
+    Staff
+        .find()
         .then(staffs => {
             res.render(
                 'index', // Đến file index theo app.set là 'ejs', 'views'
@@ -20,9 +20,9 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getStaffWithId = (req, res, next) => {
-    const staffId = req.params.staffId;
-    Thongtin
-        .findById(staffId)
+    const _id = req.params._id;
+    Staff
+        .findById(_id)
         .then(staff => {
             return res.render(
                 'MH-2', // Đến file MH-2 theo app.set là 'ejs', 'views'
@@ -48,19 +48,19 @@ exports.postEditStaff = (req, res, next) => {
     const startDate = req.body.startDate;
     const department = req.body.department;
     const annualLeave = req.body.annualLeave;
-    const staff = new Thongtin (
-        _id,
-        updatedImageUrl,
-        name,
-        doB,
-        salaryScale,
-        startDate,
-        department,
-        annualLeave,
-    )
-
-    return staff
-        .save()
+    
+    Staff
+        .findById(_id)
+        .then(staff => {
+            staff.imageUrl = updatedImageUrl;
+            staff.name = name;
+            staff.doB = doB;
+            staff.salaryScale = salaryScale;
+            staff.startDate = startDate;
+            staff.department = department;
+            staff.annualLeave = annualLeave;
+            return staff.save()
+        })
         .then(result => {
             console.log('UPDATED STAFF!');
             res.redirect('/');

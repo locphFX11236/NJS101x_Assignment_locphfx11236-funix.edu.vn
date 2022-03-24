@@ -2,14 +2,14 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const rootDir = require('./util/path');
-const routes = require('./routes/routes');
+const staffs = require('./routes/staff');
 const diemdanhs = require('./routes/diemdanh');
 const salarys = require('./routes/salary');
 const covids = require('./routes/covid-19');
 const errorController = require('./controllers/error');
-const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();
 
@@ -30,13 +30,21 @@ app.use(express.static(path.join(
     'public'
 ))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js)
 
-app.use(routes);
+app.use(staffs);
 app.use(diemdanhs);
 app.use(salarys);
 app.use(covids);
 
 app.use(errorController.get404); // Xử lý lổi 404
 
-mongoConnect(() => {
-    app.listen(3000);
-}); // Kết nối với mongodb
+mongoose
+    .connect(
+        'mongodb://localhost:27017/appQuanLy'
+    )
+    .then(result => {
+        app.listen(3000);
+    })
+    .catch(err => {
+        console.log(err);
+    })
+; // Kết nối với mongoose
