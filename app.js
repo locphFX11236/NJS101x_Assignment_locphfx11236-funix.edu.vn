@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 
 const rootDir = require('./util/path');
 const routes = require('./routes/routes');
+const diemdanhs = require('./routes/diemdanh');
+const salarys = require('./routes/salary');
 const covids = require('./routes/covid-19');
 const errorController = require('./controllers/error');
 
@@ -28,6 +30,8 @@ app.use(express.static(path.join(
 ))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js)
 
 app.use(routes);
+app.use(diemdanhs);
+app.use(salarys);
 app.use(covids);
 
 app.use(errorController.get404); // Xử lý lổi 404

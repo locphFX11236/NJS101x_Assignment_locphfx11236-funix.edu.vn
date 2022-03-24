@@ -17,12 +17,14 @@
                         </p>
                     </a>
                     <div class="card__actions">
-                        <form action="/cart" method="post">
-                            <input type="hidden" name="staffId" value="<%= staff.id %>">
+                        <form action="/diemdanh/<%= staff.id %>" method="get">
                             <button class="btn" type="submit">Điểm danh</button>
                         </form>
                         <form action="/covid/<%= staff.id %>" method="get">
                             <button class="btn" type="submit">Thông tin covid-19</button>
+                        </form>
+                        <form action="/salary/<%= staff.id %>" method="get">
+                            <button class="btn" type="submit">Thông tin tính lương</button>
                         </form>
                     </div>
                 </article>
