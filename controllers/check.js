@@ -7,13 +7,13 @@ exports.getIndex = (req, res, next) => {
         .findById(_id)
         .then(staff => {
             return res.render(
-                'MH-3', // Đến file index theo app.set là 'ejs', 'views'
-                {
-                    // checks: checks,
-                    staff: staff,
-                    pageTitle: 'Chi tiết lương', // Page Title
-                    path: '/salary', // Để truy cập view trên trình duyệt
-                }
+                'MH-1', // Đến file index theo app.set là 'ejs', 'views'
+            {
+                // checks: checks,
+                staff: staff,
+                pageTitle: 'Điểm danh', // Page Title
+                path: '/check', // Để truy cập view trên trình duyệt
+            }
             );
         })
         .catch(err => {

@@ -1,9 +1,9 @@
 const express = require('express');
 
-const salary = require('../controllers/salary');
+const salaryController = require('../controllers/salary');
 
 const router = express.Router();
 
-router.get('/salary/:staffId', salary.getIndex);
+router.get('/salary/:_id', salaryController.getIndex);
 
 module.exports = router;

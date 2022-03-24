@@ -15,7 +15,7 @@
                     <label for="loaiVaccine">Loại vaccin đã tiêm</label>
                     <input type="text" name="loaiVaccine" id="loaiVaccine" placeholder="Nhập loại vaccine đã tiêm">
                 </div>
-                <input type="hidden" value="<%= staff.id %>" name="staffId">
+                <input type="hidden" value="<%= staff._id %>" name="_id">
                 <button class="btn" type="submit">Đăng kí thông tin tiêm vaccin</button>
             </form>
         </div>
@@ -36,7 +36,7 @@
                     <label for="nhietDo">Nhiệt Độ (oC)</label>
                     <input class="centered" type="text" name="nhietDo" id="nhietDo" value="37">
                 </div>
-                <input type="hidden" value="<%= staff.id %>" name="staffId">
+                <input type="hidden" value="<%= staff._id %>" name="_id">
                 <button class="btn" type="submit">Đăng kí thông tin thân nhiệt</button>
             </form>
         </div>

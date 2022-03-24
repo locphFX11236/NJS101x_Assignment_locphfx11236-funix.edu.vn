@@ -5,10 +5,10 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const rootDir = require('./util/path');
-const staffs = require('./routes/staff');
-const diemdanhs = require('./routes/diemdanh');
-const salarys = require('./routes/salary');
-const covids = require('./routes/covid-19');
+const staffRoutes = require('./routes/staff');
+const checkRoutes = require('./routes/check');
+const salaryRoutes = require('./routes/salary');
+const covidRoutes = require('./routes/covid');
 const errorController = require('./controllers/error');
 
 const app = express();
@@ -30,10 +30,10 @@ app.use(express.static(path.join(
     'public'
 ))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js)
 
-app.use(staffs);
-app.use(diemdanhs);
-app.use(salarys);
-app.use(covids);
+app.use(staffRoutes);
+app.use(checkRoutes);
+app.use(salaryRoutes);
+app.use(covidRoutes);
 
 app.use(errorController.get404); // Xử lý lổi 404
 
