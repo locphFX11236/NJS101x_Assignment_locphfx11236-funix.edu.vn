@@ -21,25 +21,104 @@ exports.getIndex = (req, res, next) => {
     ;
 }
 
-// exports.postVaccine = (req, res, next) => {
-//     const staffId = req.body.staffId;
-//     const ngayTiem = req.body.ngayTiem;
-//     const loaiVaccine = req.body.loaiVaccine;
-//     Covid.vaccine(staffId, loaiVaccine, ngayTiem);
-//     return res.redirect('/');
-// }
+exports.postVaccine = (req, res, next) => {
+    const _id = req.body._id;
+    const newVac = {
+        dateVac: req.body.ngayTiem,
+        typeVac: req.body.loaiVaccine
+    }
+    
+    Covid
+        .findById(_id)
+        .then((cov) => {
+            // Xet cov co ton tai ko?
+            if (!cov) {
+                // Neu khong
+                const covid = new Covid({
+                    _id: _id,
+                    vaccine: [],
+                    datePositive: [],
+                    tempBody: []
+                })
+                covid.vaccine.push(newVac);
+                return covid.save();
+            } else {
+                // Neu co
+                cov.vaccine.push(newVac);
+                return cov.save();
+            };
+        })
+        .then(result => {
+          console.log(result);
+          res.redirect('/');
+        })
+        .catch(err => console.log(__dirname, err))
+    ;
+}
 
-// exports.postXN = (req, res, next) => {
-//     const staffId = req.body.staffId;
-//     const ngay = new Date().toISOString();
-//     Covid.xetNghiem(staffId, ngay);
-//     return res.redirect('/');
-// }
+exports.postXN = (req, res, next) => {
+    const _id = req.body._id;
+    const datePos = new Date();
+    
+    Covid
+        .findById(_id)
+        .then((cov) => {
+            // Xet cov co ton tai ko?
+            if (!cov) {
+                // Neu khong
+                const covid = new Covid({
+                    _id: _id,
+                    vaccine: [],
+                    datePositive: [],
+                    tempBody: []
+                })
+                covid.datePositive.push(datePos);
+                return covid.save();
+            } else {
+                // Neu co
+                cov.datePositive.push(datePos);
+                return cov.save();
+            };
+        })
+        .then(result => {
+          console.log(result);
+          res.redirect('/');
+        })
+        .catch(err => console.log(__dirname, err))
+    ;
+}
 
-// exports.postND = (req, res, next) => {
-//     const staffId = req.body.staffId;
-//     const nhietDo = req.body.nhietDo;
-//     const ngay = new Date().toISOString();
-//     Covid.nhietDo(staffId, nhietDo, ngay);
-//     return res.redirect('/');
-// }
+exports.postND = (req, res, next) => {
+    const _id = req.body._id;
+    const newTemp = {
+        dateTemp: new Date(),
+        temp: req.body.nhietDo
+    }
+    
+    Covid
+        .findById(_id)
+        .then((cov) => {
+            // Xet cov co ton tai ko?
+            if (!cov) {
+                // Neu khong
+                const covid = new Covid({
+                    _id: _id,
+                    vaccine: [],
+                    datePositive: [],
+                    tempBody: []
+                })
+                covid.tempBody.push(newTemp);
+                return covid.save();
+            } else {
+                // Neu co
+                cov.tempBody.push(newTemp);
+                return cov.save();
+            };
+        })
+        .then(result => {
+          console.log(result);
+          res.redirect('/');
+        })
+        .catch(err => console.log(__dirname, err))
+    ;
+}

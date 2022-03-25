@@ -9,7 +9,7 @@ const covidSchema = new Schema({
         required: true
     },
     vaccine: [{
-        date: {
+        dateVac: {
             type: Date,
             required: true
         },
@@ -18,14 +18,12 @@ const covidSchema = new Schema({
             required: true
         }
     }],
-    positive: [{
-        date: {
-            type: Date,
-            required: true
-        }
+    datePositive: [{
+        type: Date,
+        required: true
     }],
-    temperature: [{
-        date: {
+    tempBody: [{
+        dateTemp: {
             type: Date,
             required: true
         },
