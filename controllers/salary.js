@@ -1,4 +1,4 @@
-const Check = require('../models/check');
+const Check = require('../models/work');
 const Staff = require('../models/staff');
 
 exports.getIndex = (req, res, next) => {

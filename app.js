@@ -10,6 +10,7 @@ const checkRoutes = require('./routes/check');
 const salaryRoutes = require('./routes/salary');
 const covidRoutes = require('./routes/covid');
 const errorController = require('./controllers/error');
+const Staff = require('./models/staff');
 
 const app = express();
 
@@ -29,6 +30,19 @@ app.use(express.static(path.join(
     rootDir,
     'public'
 ))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js)
+
+app.use((req, res, next) => {
+    Staff
+        .findById('624bfac61363d568a95fa2b0')
+        .then(staff => {
+            req.staff = staff;
+            next();
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    ;
+}) // Sử dụng Staff data
 
 app.use(staffRoutes);
 app.use(checkRoutes);

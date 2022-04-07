@@ -14,7 +14,7 @@ exports.getIndex = (req, res, next) => {
             );
         })
         .catch(err => {
-            console.error(__dirname, "8", err);
+            console.error(err);
         })
     ;
 };
@@ -34,7 +34,7 @@ exports.getStaffWithId = (req, res, next) => {
             );
         })
         .catch(err => {
-            console.error(__dirname, "9", err);
+            console.error(err);
         })
     ;
 };

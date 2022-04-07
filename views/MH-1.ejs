@@ -5,41 +5,58 @@
 
 <body>
     <main class="centered">
-        <div class="card">
-            <h3>Họ và tên: </h3>
-            <p>Trạng thái: </p>
-            <p>Nơi làm việc: </p>
-            <p>Thời gian bắt đầu: </p>
-            <p>Thời gian kết thúc: </p>
-            <p>Thời gian đã làm việc trong ngày: </p>
-        </div>
         <div class="card grid">
-            <form action="/" method="post">
-                <div class="form-control centered">
-                    <label for="startTime">Thời gian hiện tại:</label>
-                    <input class="centered" type="text" name="startTime" id="startTime" value="<%= new Date() %>">
-                </div>
-                <div class="form-control centered">
-                    <label for="position">Nơi làm việc:</label>
-                    <input type="text" name="position" id="position" value="Công ty">
-                </div>
-                <button class="btn" type="submit">Bắt đầu</button>
-            </form>
-            <form action="/" method="post">
-                <div class="form-control centered">
-                    <label for="endTime">Thời gian kết thúc:</label>
-                    <input class="centered" type="text" name="endTime" id="endTime" value="<%= new Date() %>">
-                </div>
-                <button class="btn" type="submit">Kết thúc</button>
-            </form>
+            <div>
+                <h2>Họ và tên: <%= name %></h2>
+                <p>Trạng thái: <%= work.working[0].state ? 'Đang làm việc!' : 'Chưa làm việc!' %></p>
+                <p>Thời gian bắt đầu: <%= work.working[0].begin %></p>
+                <p>Thời gian kết thúc: <%= work.working[0].end %></p>
+                <p>Thời gian đã làm việc trong ngày: <%= work.working[0].workTime %></p>
+                <form action="/post-begin" method="post">
+                    <div class="form-control">
+                        <label for="at">Nơi làm việc:</label>
+                        <input type="text" name="at" id="at" value="<%= work.working[0].at %>">
+                    </div>
+                    <input type="hidden" value="<%= _id %>" name="_id">
+                    <button class="btn" type="submit" <%= work.working[0].state ? "disabled" : null %> >Điểm danh bắt đầu</button>
+                </form>
+                <form action="/post-end" method="post">
+                    <input type="hidden" value="<%= _id %>" name="_id">
+                    <button class="btn" type="submit" <%= work.working[0].state ? null : "disabled" %> >Điểm danh kết thúc</button>
+                </form>
+            </div>
+            <div>
+                <h3>Danh sách các lượt trong ngày</h3>
+            </div>
         </div>
-        <div class="card">
-            <h3>Đăng ký nghĩ phép</h3>
-            <p>Chọn ngày:</p>
-            <p>Số ngày nghĩ phép còn lại:</p>
-            <p>Bạn có thể/ không thể đăng ký nghĩ phép</p>
-            <p>Chọn số giờ nghĩ:</p>
-            <button class="btn" type="submit">Đăng ký nghĩ phép</button>
+        
+        <div class="card grid">
+            <div>
+                <h3>Đăng ký nghĩ phép</h3>
+                <form action="/post-annualLeave" method="post">
+                    <div class="form-control">
+                        <label for="aLDate">Chọn ngày:</label>
+                        <input type="date" name="aLDate" id="aLDate">
+                    </div>
+                    <div class="form-control">
+                        <label for="aLHour">Chọn số giờ nghĩ:</label>
+                        <input type="number" name="aLHour" id="aLHour" min="0" max="8" step="0.25">
+                    </div>
+                    <div class="form-control">
+                        <label for="LD">Lý do:</label>
+                        <textarea name="LD" id="LD" rows="3" cols="40"></textarea>
+                    </div>
+                    <input type="hidden" value="<%= _id %>" name="_id">
+                    <button class="btn" type="submit" <%= work.annualLeave.total <= 0 ? "disabled" : null %> >Đăng ký nghĩ phép</button>
+                </form>
+            </div>
+            <div>
+                <h3>Thông tin nghĩ phép</h3>
+                <p>Số ngày nghĩ phép còn lại: <%= work.annualLeave.total %></p>
+                <p>Bạn <%= work.annualLeave.total <= 0 ? 'không thể' : 'có thể' %> đăng ký nghĩ phép</p>
+                <p>Bạn vừa đăng ký nghĩ: <%= work.annualLeave.anLeReg[0].reg %> (ngày)</p>
+                <p>Vào ngày là: <%= work.annualLeave.anLeReg[0].date %></p>
+            </div>
         </div>
     </main>
 

@@ -3,10 +3,11 @@
 </head>
 
 <body>
+    <h1 class="centered">Họ và tên: <%= name %></h1>
     <main class="centered grid">
         <div class="card">
             <form class="product-form" action="/post-vaccine" method="POST">
-                <h3 class="centered">Thông tin tiêm vaccin</h3>
+                <h3>Thông tin tiêm vaccin</h3>
                 <div class="form-control">
                     <label for="ngayTiem">Ngày tiêm vaccin</label>
                     <input type="date" name="ngayTiem" id="ngayTiem" placeholder="Nhập ngày tiêm">
@@ -15,28 +16,33 @@
                     <label for="loaiVaccine">Loại vaccin đã tiêm</label>
                     <input type="text" name="loaiVaccine" id="loaiVaccine" placeholder="Nhập loại vaccine đã tiêm">
                 </div>
-                <input type="hidden" value="<%= staff._id %>" name="_id">
+                <input type="hidden" value="<%= covid._id %>" name="_id">
                 <button class="btn" type="submit">Đăng kí thông tin tiêm vaccin</button>
             </form>
         </div>
         <div class="card">
             <form class="product-form" action="/post-xn" method="POST">
-                <h3 class="centered">Thông tin bệnh</h3>
+                <h3>Thông tin bệnh</h3>
                 <div class="form-control">
-                    <label for="xetNghiem">Kết quả xét nghiệm dương tính</label>
-                    <input type="hidden" value="<%= staff._id %>" name="_id">
+                    <label for="xetNghiem">Kết quả xét nghiệm dương tính vào ngày</label>
+                    <input type="date" name="ngayXN" id="ngayXN" placeholder="Nhập ngày xét nghiệm dương tính">
                 </div>
+                <input type="hidden" value="<%= covid._id %>" name="_id">
                 <button class="btn" type="submit">Đăng kí thông tin bệnh</button>
             </form>
         </div>
         <div class="card">
             <form class="product-form" action="/post-nd" method="POST">
-                <h3 class="centered">Thông tin thân nhiệt</h3>
-                <div class="form-control centered">
+                <h3>Thông tin thân nhiệt</h3>
+                <div class="form-control">
                     <label for="nhietDo">Nhiệt Độ (oC)</label>
-                    <input class="centered" type="text" name="nhietDo" id="nhietDo" value="37">
+                    <input type="text" name="nhietDo" id="nhietDo" value="37">
                 </div>
-                <input type="hidden" value="<%= staff._id %>" name="_id">
+                <div class="form-control">
+                    <label for="ngayDoTem">Ngày đo nhiệt độ</label>
+                    <input type="date" name="ngayDoTem" id="ngayDoTem">
+                </div>
+                <input type="hidden" value="<%= covid._id %>" name="_id">
                 <button class="btn" type="submit">Đăng kí thông tin thân nhiệt</button>
             </form>
         </div>
