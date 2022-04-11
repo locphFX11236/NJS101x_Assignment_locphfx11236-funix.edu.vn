@@ -3,41 +3,43 @@ const handle = require('../models/handle');
 
 exports.getIndex = (req, res, next) => {
     const _id = req.params._id;
-    const name = req.staff.name;
+    const name = req.staffName;
     const dateWork = handle.handleTime.D_M_YPrint();
+    const month = dateWork.slice(0, 7);
 
     Work
-        .findById(_id)
+        .findOne({ $and: [
+            { 'id': _id },
+            { 'month': month }
+        ] })
         .then(work => {
+            const newWorking = {
+                date: dateWork,
+                state: false,
+                workTime: '00:00' + '/' + '00:00',
+                begin: 'Chưa ghi nhận!',
+                end: 'Chưa ghi nhận!',
+                at: 'Công ty'
+            }
             if (!work) {
                 const work = new Work({
-                    _id: _id,
+                    id: _id,
+                    month: month,
                     annualLeave: {
                         total: 10,
-                        anLeRe: []
+                        anLeReg: []
                     },
-                    working: [{
-                        dateWork: dateWork,
-                        state: false,
-                        workTime: '00:00',
-                        begin: 'Chưa ghi nhận!',
-                        end: 'Chưa ghi nhận!',
-                        at: 'Công ty'
-                    }]
+                    working: []
                 });
-                return work.save();
+                work.working.unshift(newWorking)
+                work.save();
+                return work;
             };
-            if (work.working[0].dateWork !== dateWork) {
-                const newWorking = {
-                    dateWork: dateWork,
-                    state: false,
-                    workTime: '00:00',
-                    begin: 'Chưa ghi nhận!',
-                    end: 'Chưa ghi nhận!',
-                    at: 'Công ty'
-                }
-                work.editWorking(newWorking);
-            };
+            if (work.working.length === 0) {
+                work.working.unshift(newWorking);
+                work.save();
+                return work;
+            }
             return work;
         })
         .then(work => {
@@ -45,10 +47,11 @@ exports.getIndex = (req, res, next) => {
                 'MH-1', // Đến file index theo app.set là 'ejs', 'views'
                 {
                     _id: _id,
+                    date: dateWork,
                     work: work,
                     name: name,
                     pageTitle: 'Điểm danh', // Page Title
-                    path: '/check/:_id', // Để truy cập view trên trình duyệt
+                    path: '/check', // Để truy cập view trên trình duyệt
                 }
             );
         })
@@ -61,25 +64,29 @@ exports.getIndex = (req, res, next) => {
 exports.postBegin = (req, res, next) => {
     const _id = req.body._id;
     const dateWork = handle.handleTime.D_M_YPrint();
+    const month = dateWork.slice(0, 7);
     const timeNow = handle.handleTime.H_MPrint(new Date());
     const at = req.body.at;
     
     Work
-        .findById(_id)
+        .findOne({ $and: [
+            { 'id': _id },
+            { 'month': month }
+        ] })
         .then(work => {
             const newWorking = {
-                dateWork: dateWork,
+                date: dateWork,
                 state: true,
                 workTime: work.working[0].workTime,
                 begin: timeNow,
                 end: 'Chưa ghi nhận!',
                 at: at
             }
-            work.editWorking(newWorking);
+            work.editWork(newWorking, dateWork);
             return work;
         })
         .then(result => {
-            console.log(result);
+            console.log('Bắt đầu phiên làm việc');
             res.redirect('/');
         })
         .catch(err => console.log(__dirname, err))
@@ -88,24 +95,29 @@ exports.postBegin = (req, res, next) => {
 
 exports.postEnd = (req, res, next) => {
     const _id = req.body._id;
+    const dateWork = handle.handleTime.D_M_YPrint();
+    const month = dateWork.slice(0, 7);
     const timeNow = handle.handleTime.H_MPrint(new Date());
     
     Work
-        .findById(_id)
+        .findOne({ $and: [
+            { 'id': _id },
+            { 'month': month }
+        ] })
         .then(work => {
             const newWorking = {
-                dateWork: work.working[0].dateWork,
+                date: dateWork,
                 state: false,
                 workTime: handle.handleTime.workTime(work.working[0].begin, timeNow, work.working[0].workTime),
                 begin: work.working[0].begin,
                 end: timeNow,
                 at: work.working[0].at
             }
-            work.editWorking(newWorking);
+            work.editWork(newWorking, dateWork);
             return work;
         })
         .then(result => {
-              console.log(result);
+            console.log('Kết thúc phiên làm việc');
             res.redirect('/');
         })
         .catch(err => console.log(__dirname, err))
@@ -115,22 +127,39 @@ exports.postEnd = (req, res, next) => {
 exports.postAnLeRe = (req, res, next) => {
     const _id = req.body._id;
     const date = req.body.aLDate.toString();
+    const month = date.slice(0, 7);
     const annu = req.body.aLHour;
     const LD = req.body.LD;
+    const newReg = {
+        date: date,
+        reg: annu/8,
+        LD: LD
+    }
 
     Work
-        .findById(_id)
+        .findOne({ $and: [
+            { 'id': _id },
+            { 'month': month }
+        ] })
         .then(work => {
-            const newReg = {
-                date: date,
-                reg: annu/8,
-                LD: LD,
-            }
-            work.addAnnualLeave(newReg);  
+            if (!work) {
+                const work = new Work({
+                    id: _id,
+                    month: month,
+                    annualLeave: {
+                        total: 10,
+                        anLeReg: []
+                    },
+                    working: []
+                });
+                work.addAnnualLeave(newReg);
+                return work;
+            };
+            work.addAnnualLeave(newReg);
             return work;
         })
         .then(result => {
-            console.log(result);
+            console.log('Đăng ký nghĩ thành công!');
             res.redirect('/');
         })
         .catch(err => console.log(__dirname, err))

@@ -3,22 +3,59 @@
 </head>
 
 <body>
+    <%- include('includes/navigation.ejs') %>
     <main class="centered">
         <div class="card">
-            <h3>Họ và tên: </h3>
-            <p>Thời gian làm thêm: </p>
-            <p>Thời gian nghĩ phép: </p>
-            <p>Thời gian bắt đầu: </p>
-            <p>Thời gian kết thúc: </p>
-            <p>Nơi làm việc: </p>
-            <p>Thời gian làm thêm theo ngày: </p>
-        </div>
-        <div class="card">
             <h3>Chi tiết lương tháng</h3>
-            <p>Chọn tháng:</p>
+            <h4>Họ và tên: <%= name %></h4>
+            <form action="/post-seach-month" method="post">
+                <div class="form-control">
+                    <label for="seachMonth">Chọn tháng:</label>
+                    <input type="date" name="seachMonth" id="seachMonth">
+                </div>
+                <input type="hidden" value="<%= _id %>" name="_id">
+                <button class="btn" type="submit">Seach lương tháng</button>
+            </form>
             <p>Lương = salaryScale * 3000000 + (overTime - số giờ làm thiếu) * 200000</p>
-            <p>'Lương' = 'salaryScale' * 3000000 + ('overTime' - 'số giờ làm thiếu') * 200000</p>
+            <% if (seachData) { %>
+                <p><%= seachData.Luong %> = <%= seachData.HSL %> * 3000000 + (<%= seachData.OT %> - <%= seachData.LT %>) * 200000</p>
+            <% } %>
         </div>
+        <% if (!seachData) { %>
+            <div class="card">
+                <h4>Chi tiết làm việc</h4>
+                <% work.forEach(function (w) {
+                    const m = w.working.map(function (p) {
+                        return p.date;
+                    });
+                    if(m.length !== 0) {
+                        const M = Array.from(new Set(m)); // Loại phần tử trùng
+                        M.forEach(function (m) {
+                            const D = w.working.filter(function (p) {
+                                return p.date === m;
+                            })
+                            D.forEach(function (d) {
+                                %><div class="card">
+                                    <p>Ngày: <%= d.date %></p>
+                                    <p>Thời gian bắt đầu: <%= d.begin %></p>
+                                    <p>Thời gian kết thúc: <%= d.end %></p>
+                                    <p>Nơi làm việc: <%= d.at %></p>
+                                    <p>Thời gian làm thêm theo ngày: <%= d.workTime.slice(0, 5) %></p>
+                                </div><%
+                            })
+                            const A = w.annualLeave.anLeReg.filter(function (x) {
+                                return x.date === m;
+                            });
+                            let sum = 0;
+                            A.forEach(function (y) {
+                                sum += y.reg;
+                            });
+                            %><p>Thời gian đăng ký nghĩ phép: <%= sum %></p><%
+                        })
+                    }
+                }); %>
+            </div>
+        <% } %>
     </main>
 
 <%- include('includes/end.ejs') %>

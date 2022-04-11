@@ -3,9 +3,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const workSchema = new Schema({
-    _id: {
+    id: {
         type: Schema.Types.ObjectId,
         ref: 'Staff',
+        required: true
+    },
+    month: {
+        type: String,
         required: true
     },
     annualLeave: {
@@ -28,8 +32,8 @@ const workSchema = new Schema({
             }
         } ]
     },
-    working: [{
-        dateWork: {
+    working: [ {
+        date: {
             type: String,
             required: true
         },
@@ -53,33 +57,30 @@ const workSchema = new Schema({
             type: String,
             required: true
         }
-    }]
+    } ]
 });
 
-workSchema.methods.editWorking = function(newWorking) {
-    const dateWorkingIndex = this.working.findIndex(dw => {
-        return dw.dateWork.toString() === newWorking.dateWork.toString();
-    });
-    if (dateWorkingIndex >= 0) { // Nếu working đã đc tạo trước đó
-        this.working[dateWorkingIndex] = newWorking;
-    } else { // Nếu working chưa đc tạo trước đó
-        this.working.unshift(newWorking);
-        this.working[1].state = false;
+workSchema.methods.editWork = function(newWorking, dateWork) {
+    if (this.working[0].end !== 'Chưa ghi nhận!') { // Tạo mới phiên
+        if (this.working[0].date !== dateWork) {
+            this.working.unshift(newWorking);
+            this.working[1].state = false;
+            this.working[0].workTime = '00:00' + '/' + this.working[1].workTime.slice(-5);
+        } else {
+            this.working.unshift(newWorking);
+        }
+    } else { // Nếu phiên làm việc đã đc tạo trước đó
+        this.working[0] = newWorking;
     }
-    return this.save();
+    this.save();
+    return this;
 };
 
 workSchema.methods.addAnnualLeave = function(newReg) {
-    const dateIndex = this.annualLeave.anLeReg.findIndex(di => {
-        return di.date.toString() === newReg.date.toString();
-    });
-    if (dateIndex >= 0) { // Nếu annualLeave.anLeReg đã đc tạo trước đó
-        this.annualLeave.anLeReg[dateIndex].reg += newReg.reg;
-    } else { // Nếu annualLeave.anLeReg chưa đc tạo trước đó
-        this.annualLeave.anLeReg.unshift(newReg);
-    }
+    this.annualLeave.anLeReg.push(newReg);
     this.annualLeave.total -= newReg.reg;
-    return this.save();
+    this.save();
+    return this;
 }
 
 module.exports = mongoose.model('Work', workSchema);

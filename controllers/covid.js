@@ -2,7 +2,7 @@ const Covid = require('../models/covid');
 
 exports.getIndex = (req, res, next) => {
     const _id = req.params._id;
-    const name = req.staff.name;
+    const name = req.staffName;
     Covid
         .findById(_id)
         .then(cov => {

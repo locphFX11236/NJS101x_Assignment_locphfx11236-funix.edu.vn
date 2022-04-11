@@ -29,7 +29,7 @@ exports.getStaffWithId = (req, res, next) => {
                 {
                     staff: staff,
                     pageTitle: 'Thông tin nhân viên', // Page Title
-                    path: '/staff/:staffId', // Để truy cập view trên trình duyệt
+                    path: '/staff', // Để truy cập view trên trình duyệt
                 }
             );
         })

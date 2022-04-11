@@ -4,8 +4,9 @@
 </head>
 
 <body>
-    <main class="centered">
-        <div class="card grid">
+    <%- include('includes/navigation.ejs') %>
+    <main class="centered grid">
+        <div class="card">
             <div>
                 <h2>Họ và tên: <%= name %></h2>
                 <p>Trạng thái: <%= work.working[0].state ? 'Đang làm việc!' : 'Chưa làm việc!' %></p>
@@ -26,11 +27,29 @@
                 </form>
             </div>
             <div>
-                <h3>Danh sách các lượt trong ngày</h3>
+                <h3>Danh sách các phiên làm việc trong ngày</h3>
+                    <%
+                        const P = work.working.filter(function (p) {
+                            return p.date === date;
+                        })
+                        if (P.length !== 0 && P[0].begin !== 'Chưa ghi nhận!') {
+                            P.forEach(function (p) {
+                    %>
+                        <div class="card">
+                            <p>Phiên làm việc bắt đầu lúc: <%= p.begin %></p>
+                            <p>Kết thúc lúc: <%= p.end %></p>
+                            <p>Tại: <%= p.at %></p>
+                        </div>
+                    <%  
+                            });
+                        } else {
+                    %>
+                        <p class="card">Hôm nay chưa bắt đầu làm việc!</p>
+                    <% } %>
             </div>
         </div>
         
-        <div class="card grid">
+        <div class="card">
             <div>
                 <h3>Đăng ký nghĩ phép</h3>
                 <form action="/post-annualLeave" method="post">
@@ -54,8 +73,6 @@
                 <h3>Thông tin nghĩ phép</h3>
                 <p>Số ngày nghĩ phép còn lại: <%= work.annualLeave.total %></p>
                 <p>Bạn <%= work.annualLeave.total <= 0 ? 'không thể' : 'có thể' %> đăng ký nghĩ phép</p>
-                <p>Bạn vừa đăng ký nghĩ: <%= work.annualLeave.anLeReg[0].reg %> (ngày)</p>
-                <p>Vào ngày là: <%= work.annualLeave.anLeReg[0].date %></p>
             </div>
         </div>
     </main>

@@ -35,7 +35,8 @@ app.use((req, res, next) => {
     Staff
         .findById('624bfac61363d568a95fa2b0')
         .then(staff => {
-            req.staff = staff;
+            req.staffName = staff.name;
+            req.staffHSL = staff.salaryScale;
             next();
         })
         .catch(err => {
