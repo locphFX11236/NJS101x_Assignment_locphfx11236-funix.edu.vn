@@ -10,6 +10,7 @@ const checkRoutes = require('./routes/check');
 const salaryRoutes = require('./routes/salary');
 const covidRoutes = require('./routes/covid');
 const errorController = require('./controllers/error');
+const authRoutes = require('./routes/auth');
 const Staff = require('./models/staff');
 
 const app = express();
@@ -33,7 +34,7 @@ app.use(express.static(path.join(
 
 app.use((req, res, next) => {
     Staff
-        .findById('624bfac61363d568a95fa2b0')
+        .findById('62593a36ceef9bb0c8c3ec7b')
         .then(staff => {
             req.staffName = staff.name;
             req.staffHSL = staff.salaryScale;
@@ -49,6 +50,7 @@ app.use(staffRoutes);
 app.use(checkRoutes);
 app.use(salaryRoutes);
 app.use(covidRoutes);
+app.use(authRoutes);
 
 app.use(errorController.get404); // Xử lý lổi 404
 

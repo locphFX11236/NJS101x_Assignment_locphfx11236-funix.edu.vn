@@ -51,7 +51,7 @@ exports.getIndex = (req, res, next) => {
                     work: work,
                     name: name,
                     pageTitle: 'Điểm danh', // Page Title
-                    path: '/check', // Để truy cập view trên trình duyệt
+                    path: '/check', // Thuộc tính path truyền vào
                 }
             );
         })
