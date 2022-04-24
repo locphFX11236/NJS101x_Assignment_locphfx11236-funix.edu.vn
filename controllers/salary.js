@@ -18,6 +18,7 @@ exports.getIndex = (req, res, next) => {
                     name: name,
                     pageTitle: 'Điểm danh', // Page Title
                     path: '/salary', // Để truy cập view trên trình duyệt
+                    isAuthenticated: req.isLoggedIn
                 }
             );
         })
@@ -70,7 +71,8 @@ exports.seachMonth = (req, res, next) => {
                     seachData: result,
                     name: name,
                     pageTitle: 'Điểm danh', // Page Title
-                    path: '/seachData'
+                    path: '/seachData',
+                    isAuthenticated: req.session.isLoggedIn
                 }
             );
         })

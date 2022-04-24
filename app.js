@@ -3,6 +3,8 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const rootDir = require('./util/path');
 const staffRoutes = require('./routes/staff');
@@ -13,7 +15,12 @@ const errorController = require('./controllers/error');
 const authRoutes = require('./routes/auth');
 const Staff = require('./models/staff');
 
+const MONGODB_URI = 'mongodb://localhost:27017/appQuanLy';
 const app = express();
+const store = new MongoDBStore({
+    uri: MONGODB_URI,
+    collection: 'sessions'
+});
 
 app.set(
     'view engine', // Khai báo Template động nào sử dụng
@@ -31,10 +38,19 @@ app.use(express.static(path.join(
     rootDir,
     'public'
 ))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js)
+app.use(session({
+    secret: 'my secret',
+    resave: false,
+    saveUninitialized: false,
+    store: store
+}));
 
 app.use((req, res, next) => {
+    if (!req.session.staff) {
+        return next();
+    };
     Staff
-        .findById('62593a36ceef9bb0c8c3ec7b')
+        .findById(req.session.staff._id)
         .then(staff => {
             req.staffName = staff.name;
             req.staffHSL = staff.salaryScale;
@@ -44,7 +60,7 @@ app.use((req, res, next) => {
             console.log(err);
         })
     ;
-}) // Sử dụng Staff data
+}); // Sử dụng Staff data
 
 app.use(staffRoutes);
 app.use(checkRoutes);
@@ -55,9 +71,7 @@ app.use(authRoutes);
 app.use(errorController.get404); // Xử lý lổi 404
 
 mongoose
-    .connect(
-        'mongodb://localhost:27017/appQuanLy'
-    )
+    .connect(MONGODB_URI)
     .then(result => {
         app.listen(3000);
     })

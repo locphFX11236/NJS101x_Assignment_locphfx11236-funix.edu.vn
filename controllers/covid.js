@@ -23,6 +23,7 @@ exports.getIndex = (req, res, next) => {
                     covid: cov,
                     pageTitle: 'Thông tin covid-19', // Page Title
                     path: '/covid', // Để truy cập view trên trình duyệt
+                    isAuthenticated: req.session.isLoggedIn
                 }
             );
         })

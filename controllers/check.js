@@ -52,6 +52,7 @@ exports.getIndex = (req, res, next) => {
                     name: name,
                     pageTitle: 'Điểm danh', // Page Title
                     path: '/check', // Thuộc tính path truyền vào
+                    isAuthenticated: req.session.isLoggedIn
                 }
             );
         })
