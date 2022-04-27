@@ -17,11 +17,11 @@ const Staff = require('./models/staff');
 const User = require('./models/user');
 
 const MONGODB_URI = 'mongodb://localhost:27017/appStaff';
-const app = express();
+const app = express(); // Sử dụng framework express.js
 const store = new MongoDBStore({
-    uri: MONGODB_URI,
-    collection: 'sessions'
-});
+    uri: MONGODB_URI, // Kết nối database
+    collection: 'sessions' // Tạo collection 'session' trong database
+}); // Tạo kho lưu trữ session trên database
 
 app.set(
     'view engine', // Khai báo Template động nào sử dụng
@@ -44,7 +44,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: store
-})); // Tao kho luu tru session
+})); // Sử dụng session để bảo mật Cookie
 
 app.use(staffRoutes);
 // app.use(checkRoutes);
@@ -55,11 +55,11 @@ app.use(authRoutes);
 app.use(errorController.get404); // Xử lý lổi 404
 
 mongoose
-    .connect(MONGODB_URI)
+    .connect(MONGODB_URI) // Kết nối database
     .then(result => {
-        app.listen(3000);
+        app.listen(3000); // Sử dụng cổng 3000 của localhost để gọi và sử dụng database
     })
     .catch(err => {
         console.log(err);
     })
-; // Kết nối với mongoose
+; // Kết nối với database bằng mongoose

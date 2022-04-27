@@ -1,12 +1,20 @@
 const express = require('express');
 
-const checkController = require('../controllers/check');
+const checkController = require('../controllers/check'); // Liên kết với file controler xử lý hoạt động router
+const isAuth = require('../middleware/is-auth'); // Liên kết với Middleware
 
 const router = express.Router();
 
-router.get('/check/:_id', checkController.getIndex);
-router.post('/post-begin', checkController.postBegin);
-router.post('/post-end', checkController.postEnd);
-router.post('/post-annualLeave', checkController.postAnLeRe);
+router
+    .get( // Sử dụng phương thức get để thực hiện router
+        '/check/:_id', // Bắt lấy path này
+        isAuth, // Bảo vệ router
+        checkController.getIndex // Lấy function getIndex để xử lý router
+    )
+;
+// Tương tự với các router còn lại
+router.post('/post-begin', isAuth, checkController.postBegin);
+router.post('/post-end', isAuth, checkController.postEnd);
+router.post('/post-annualLeave', isAuth, checkController.postAnLeRe);
 
 module.exports = router;
