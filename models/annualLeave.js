@@ -2,40 +2,25 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const staffSchema = new Schema({
-    staffId: {
+const annualLeaveSchema = new Schema({
+    _id: {
+        type: Schema.Types.ObjectId,
+        ref: 'Staff',
+        required: true
+    },
+    confirm: {
+        type: Boolean,
+        required: true
+    },
+    date: {
         type: String,
         required: true
     },
-    imageUrl: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    doB: {
-        type: Date,
-        required: true
-    },
-    salaryScale: {
+    register: {
         type: Number,
         required: true
     },
-    startDate: {
-        type: Date,
-        required: true
-    },
-    department: {
-        type: String,
-        required: true
-    },
-    annualLeave: {
-        type: Number,
-        required: true
-    },
-    managerId: {
+    reason: {
         type: String,
         required: true
     }
@@ -48,4 +33,4 @@ const staffSchema = new Schema({
 //     return this;
 // }
 
-module.exports = mongoose.model('Staff', staffSchema);
+module.exports = mongoose.model('AnnualLeave', annualLeaveSchema);

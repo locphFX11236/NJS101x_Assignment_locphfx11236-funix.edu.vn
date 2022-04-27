@@ -1,0 +1,24 @@
+[
+    {
+        "staffId": "NV1",
+        "name": "AAAA",
+        "doB": "2001-01-01",
+        "salaryScale": 1,
+        "startDate": "2021-01-01",
+        "department": "IT",
+        "annualLeave": 2,
+        "imageUrl": "https://phunugioi.com/wp-content/uploads/2020/10/hinh-anh-chibi-buon.jpg",
+        "managerId": "QL1"
+    },
+    {
+        "staffId": "NV2",
+        "name": "BBBB",
+        "doB": "2002-02-02",
+        "salaryScale": 1,
+        "startDate": "2022-02-02",
+        "department": "IT",
+        "annualLeave": 2,
+        "imageUrl": "https://phunugioi.com/wp-content/uploads/2020/10/hinh-anh-chibi-buon.jpg",
+        "managerId": "QL1"
+    }
+]

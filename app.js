@@ -14,8 +14,9 @@ const covidRoutes = require('./routes/covid');
 const errorController = require('./controllers/error');
 const authRoutes = require('./routes/auth');
 const Staff = require('./models/staff');
+const User = require('./models/user');
 
-const MONGODB_URI = 'mongodb://localhost:27017/appQuanLy';
+const MONGODB_URI = 'mongodb://localhost:27017/appStaff';
 const app = express();
 const store = new MongoDBStore({
     uri: MONGODB_URI,
@@ -43,29 +44,12 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: store
-}));
-
-app.use((req, res, next) => {
-    if (!req.session.staff) {
-        return next();
-    };
-    Staff
-        .findById(req.session.staff._id)
-        .then(staff => {
-            req.staffName = staff.name;
-            req.staffHSL = staff.salaryScale;
-            next();
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    ;
-}); // Sử dụng Staff data
+})); // Tao kho luu tru session
 
 app.use(staffRoutes);
-app.use(checkRoutes);
-app.use(salaryRoutes);
-app.use(covidRoutes);
+// app.use(checkRoutes);
+// app.use(salaryRoutes);
+// app.use(covidRoutes);
 app.use(authRoutes);
 
 app.use(errorController.get404); // Xử lý lổi 404

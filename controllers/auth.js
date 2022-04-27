@@ -1,4 +1,4 @@
-const Staff = require('../models/staff');
+const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
@@ -9,15 +9,25 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-    Staff
-        .findById('62593a36ceef9bb0c8c3ec7b')
-        .then(staff => {
-            req.session.isLoggedIn = true;
-            req.session.staff = staff;
-            req.session.save(err => {
-                console.log(__dirname, '1',err);
-                res.redirect('/');
-            });
+    const userId = req.body.userId;
+    const password = req.body.password;
+    User
+        .findOne({userId: userId})
+        .then(user => {
+            if (!user) {
+                return res.redirect('/404');
+            } else if (user.password === password) {
+                const session = req.session; // Vào database tạo 1 session
+                // Add các giá trị vào session
+                session.isLoggedIn = true;
+                session.user = user;
+                return session.save(err => {
+                    console.log(__dirname, '1',err);
+                    res.redirect('/');
+                }); // Lưu session vào database
+            } else {
+                return res.redirect('/404');
+            }
         })
         .catch(err => {
             console.log(err);
@@ -26,8 +36,9 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postLogout = (req, res, next) => {
-    req.session.destroy((err) => {
+    const session = req.session; // Vào database tạo 1 session
+    return session.destroy((err) => {
         console.log(__dirname, '2', err);
         res.redirect('/');
-    });
+    }); // Xóa session trong database
 }; 

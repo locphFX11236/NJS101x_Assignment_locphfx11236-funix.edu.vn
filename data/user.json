@@ -1,0 +1,22 @@
+[
+    {
+        "userId": "QL1",
+        "password": "123",
+        "position": "Manager"
+    },
+    {
+        "userId": "QL2",
+        "password": "123",
+        "position": "Manager"
+    },
+    {
+        "userId": "NV1",
+        "password": "123",
+        "position": "Staff"
+    },
+    {
+        "userId": "NV2",
+        "password": "123",
+        "position": "Staff"
+    }
+]

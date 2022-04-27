@@ -1,23 +1,29 @@
 const Staff = require('../models/staff');
 
 exports.getIndex = (req, res, next) => {
-    Staff
-        .find()
-        .then(staffs => {
-            res.render(
-                'index', // Đến file index theo app.set là 'ejs', 'views'
-                {
-                    staffs: staffs,
-                    pageTitle: 'Danh sách nhân viên', // Page Title
-                    path: '/', // Để truy cập view trên trình duyệt
-                    isAuthenticated: req.session.isLoggedIn
-                }
-            );
-        })
-        .catch(err => {
-            console.error(err);
-        })
-    ;
+    if (!req.session.user) {
+        return res.redirect('/login');
+    } else {
+        const managerId = req.session.user.userId;
+        Staff
+            .find({"managerId": managerId})
+            .then(staffs => {
+                console.log(staffs)
+                res.render(
+                    'index', // Đến file index theo app.set là 'ejs', 'views'
+                    {
+                        staffs: staffs,
+                        pageTitle: 'Danh sách nhân viên', // Page Title
+                        path: '/', // Để truy cập view trên trình duyệt
+                        isAuthenticated: req.session.isLoggedIn
+                    }
+                );
+            })
+            .catch(err => {
+                console.error(err);
+            })
+        ;
+    };
 };
 
 exports.getStaffWithId = (req, res, next) => {
