@@ -8,7 +8,6 @@ exports.getIndex = (req, res, next) => {
         Staff
             .find({"managerId": managerId})
             .then(staffs => {
-                console.log(staffs)
                 res.render(
                     'index', // Đến file index theo app.set là 'ejs', 'views'
                     {

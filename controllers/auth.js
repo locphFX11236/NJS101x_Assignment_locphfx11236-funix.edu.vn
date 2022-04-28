@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs'); // Package hash mật khẩu để bảo mật
+
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
@@ -9,24 +11,34 @@ exports.getLogin = (req, res, next) => {
 
 exports.postLogin = (req, res, next) => {
     const userId = req.body.userId;
-    const password = req.body.password;
+    const password = req.body.password; // password là 123
+
     User
         .findOne({userId: userId})
         .then(user => {
             if (!user) {
                 return res.redirect('/404');
-            } else if (user.password === password) {
-                const session = req.session; // Vào database tạo 1 session
-                // Add các giá trị vào session
-                session.isLoggedIn = true;
-                session.user = user;
-                return session.save(err => {
-                    console.log(__dirname, '1',err);
-                    res.redirect('/');
-                }); // Lưu session vào database
-            } else {
-                return res.redirect('/404');
             }
+            bcrypt
+                .compare(password, user.password) // So sánh mật khẩu đã hash
+                .then(doMatch => {
+                    if (doMatch) {
+                        const session = req.session; // Vào database tạo 1 session
+                        // Add các giá trị vào session
+                        session.isLoggedIn = true;
+                        session.user = user;
+                        return req.session.save(err => {
+                            console.log(__dirname, '3', err);
+                            return res.redirect('/');
+                        }); // Lưu session vào database
+                    }
+                    res.redirect('/404');
+                })
+                .catch(err => {
+                  console.log(err);
+                  res.redirect('/404');
+                })
+            ;
         })
         .catch(err => {
             console.log(err);

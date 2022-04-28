@@ -1,22 +1,22 @@
 [
     {
         "userId": "QL1",
-        "password": "123",
+        "password": "$2a$12$.MX/jv7zELvzkCxpyYN7mOB3h.vR8KoPsp6X4FrtUh80USOg26g5G",
         "position": "Manager"
     },
     {
         "userId": "QL2",
-        "password": "123",
+        "password": "$2a$12$.MX/jv7zELvzkCxpyYN7mOB3h.vR8KoPsp6X4FrtUh80USOg26g5G",
         "position": "Manager"
     },
     {
         "userId": "NV1",
-        "password": "123",
+        "password": "$2a$12$.MX/jv7zELvzkCxpyYN7mOB3h.vR8KoPsp6X4FrtUh80USOg26g5G",
         "position": "Staff"
     },
     {
         "userId": "NV2",
-        "password": "123",
+        "password": "$2a$12$.MX/jv7zELvzkCxpyYN7mOB3h.vR8KoPsp6X4FrtUh80USOg26g5G",
         "position": "Staff"
     }
 ]
