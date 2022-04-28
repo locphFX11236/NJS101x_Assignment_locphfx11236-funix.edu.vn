@@ -18,11 +18,13 @@
                         <label for="at">Nơi làm việc:</label>
                         <input type="text" name="at" id="at" value="<%= work.working[0].at %>">
                     </div>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input type="hidden" value="<%= _id %>" name="_id">
                     <button class="btn" type="submit" <%= work.working[0].state ? "disabled" : null %> >Điểm danh bắt đầu</button>
                 </form>
                 <form action="/post-end" method="post">
                     <input type="hidden" value="<%= _id %>" name="_id">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button class="btn" type="submit" <%= work.working[0].state ? null : "disabled" %> >Điểm danh kết thúc</button>
                 </form>
             </div>
@@ -66,6 +68,7 @@
                         <textarea name="LD" id="LD" rows="3" cols="40"></textarea>
                     </div>
                     <input type="hidden" value="<%= _id %>" name="_id">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button class="btn" type="submit" <%= work.annualLeave.total <= 0 ? "disabled" : null %> >Đăng ký nghĩ phép</button>
                 </form>
             </div>

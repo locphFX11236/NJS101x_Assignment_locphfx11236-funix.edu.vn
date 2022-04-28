@@ -51,8 +51,7 @@ exports.getIndex = (req, res, next) => {
                     work: work,
                     name: name,
                     pageTitle: 'Điểm danh', // Page Title
-                    path: '/check', // Thuộc tính path truyền vào
-                    isAuthenticated: req.session.isLoggedIn
+                    path: '/check' // Thuộc tính path truyền vào
                 }
             );
         })

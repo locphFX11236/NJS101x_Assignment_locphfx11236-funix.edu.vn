@@ -22,8 +22,7 @@ exports.getIndex = (req, res, next) => {
                     name: name,
                     covid: cov,
                     pageTitle: 'Thông tin covid-19', // Page Title
-                    path: '/covid', // Để truy cập view trên trình duyệt
-                    isAuthenticated: req.session.isLoggedIn
+                    path: '/covid' // Để truy cập view trên trình duyệt
                 }
             );
         })

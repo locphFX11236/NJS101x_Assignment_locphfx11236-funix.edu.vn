@@ -14,8 +14,7 @@ exports.getIndex = (req, res, next) => {
                     {
                         staffs: staffs,
                         pageTitle: 'Danh sách nhân viên', // Page Title
-                        path: '/', // Để truy cập view trên trình duyệt
-                        isAuthenticated: req.session.isLoggedIn
+                        path: '/' // Để truy cập view trên trình duyệt
                     }
                 );
             })
@@ -36,8 +35,7 @@ exports.getStaffWithId = (req, res, next) => {
                 {
                     staff: staff,
                     pageTitle: 'Thông tin nhân viên', // Page Title
-                    path: '/staff', // Để truy cập view trên trình duyệt
-                    isAuthenticated: req.session.isLoggedIn
+                    path: '/staff' // Để truy cập view trên trình duyệt
                 }
             );
         })

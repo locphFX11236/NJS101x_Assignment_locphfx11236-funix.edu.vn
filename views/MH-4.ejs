@@ -18,6 +18,7 @@
                     <input type="text" name="loaiVaccine" id="loaiVaccine" placeholder="Nhập loại vaccine đã tiêm">
                 </div>
                 <input type="hidden" value="<%= covid._id %>" name="_id">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <button class="btn" type="submit">Đăng kí thông tin tiêm vaccin</button>
             </form>
         </div>
@@ -29,6 +30,7 @@
                     <input type="date" name="ngayXN" id="ngayXN" placeholder="Nhập ngày xét nghiệm dương tính">
                 </div>
                 <input type="hidden" value="<%= covid._id %>" name="_id">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <button class="btn" type="submit">Đăng kí thông tin bệnh</button>
             </form>
         </div>
@@ -44,6 +46,7 @@
                     <input type="date" name="ngayDoTem" id="ngayDoTem">
                 </div>
                 <input type="hidden" value="<%= covid._id %>" name="_id">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <button class="btn" type="submit">Đăng kí thông tin thân nhiệt</button>
             </form>
         </div>
