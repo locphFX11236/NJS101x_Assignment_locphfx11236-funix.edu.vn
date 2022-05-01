@@ -7,10 +7,16 @@
    <%- include('../includes/navigation.ejs') %>
 
     <main>
+        <!-- Hiển thị error message -->
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+
+        <!-- Form đăng nhập -->
         <form class="login-form centered" action="/login" method="POST">
             <h3>Đăng nhập tài khoản quản lý</h3>
             <div class="form-control">
-                <label for="userId">ID</label>
+                <label for="userId">ID (Mã nhân viên)</label>
                 <input type="text" name="userId" id="userId">
             </div>
             <div class="form-control">

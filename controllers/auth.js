@@ -3,9 +3,19 @@ const bcrypt = require('bcryptjs'); // Package hash mật khẩu để bảo m�
 const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
-    res.render('auth/login', {
+    
+    // Xử lý error message
+    let message = req.flash('error');
+    if (message.length > 0) {
+      message = message[0];
+    } else {
+      message = null;
+    }
+
+    return res.render('auth/login', {
         path: '/login',
-        pageTitle: 'Login'
+        pageTitle: 'Login',
+        errorMessage: message // Gọi giá trị của error trong đối tượng req.flash
     });
 };
 
@@ -17,7 +27,8 @@ exports.postLogin = (req, res, next) => {
         .findOne({userId: userId})
         .then(user => {
             if (!user) {
-                return res.redirect('/404');
+                req.flash('error', 'ID Not Found!'); // Thêm vào req.flash 1 đối tượng {'error', 'ID Not Found!'}
+                return res.redirect('/login');
             }
             bcrypt
                 .compare(password, user.password) // So sánh mật khẩu đã hash

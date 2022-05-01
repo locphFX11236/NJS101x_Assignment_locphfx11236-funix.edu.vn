@@ -113,6 +113,22 @@ text-align: center;
   cursor: pointer;
 }
 
+.user-message {
+  margin: auto;
+  width: 90%;
+  border: 1px solid #4646ff;
+  padding: 0.5rem;
+  border-radius: 3px;
+  background: #aaaaff;
+  text-align: center;
+}
+
+.user-message--error {
+  border-color: red;
+  background: #fab9b9;
+  color: red;
+}
+
 .main-header__item a:hover,
 .main-header__item a:active,
 .main-header__item a.active,
@@ -205,5 +221,9 @@ text-align: center;
 
   #side-menu-toggle {
     display: none;
+  }
+
+  .user-message {
+    width: 30rem;
   }
 }

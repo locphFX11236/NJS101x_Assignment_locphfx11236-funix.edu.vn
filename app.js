@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
+const flash = require('connect-flash');
 
 // Liên kết các file trong app
 const rootDir = require('./util/path');
@@ -30,12 +31,12 @@ const csrfProtection = csrf(); // Tạo csrfProtection
 
 // Thiết đặt sử dụng template
 app.set(
-    'view engine', // Khai báo Template động nào sử dụng
-    'ejs' // Là ejs
+    'view engine', // Khai báo sẽ sử dụng Template động cho view
+    'ejs' // Template động là package ejs
 );
 app.set(
-    'views', // Khai báo vị trí file chứa template động
-    'views' // Tại file views
+    'views', // Khai báo các view sẽ sử dụng template động
+    'views' // Tại file views ngang hàng với file app.js
 );
 
 // Sử dụng các package
@@ -43,8 +44,8 @@ app.use(bodyParser.urlencoded(
     { extended: false }
 )); // Nhận dữ liệu post từ client, gọi dữ liệu = req.body.<name>
 app.use(express.static(path.join(
-    rootDir,
-    'public'
+    rootDir, // Đường dẫn đến file chứa file app.js
+    'public' // File chọn để truy cập tĩnh
 ))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js)
 app.use(session({
     secret: 'my secret',
@@ -54,10 +55,11 @@ app.use(session({
 })); // Sử dụng session để bảo mật Cookie
 app.use(csrfProtection); // Bảo vệ tấn công csrf
 app.use((req, res, next) => {
-    res.locals.isAuthenticated = req.session.isLoggedIn; // Biến xác thực
-    res.locals.csrfToken = req.csrfToken(); // Biến csrfToken
+    res.locals.isAuthenticated = req.session.isLoggedIn; // Biến xác thực người dùng có đăng nhập
+    res.locals.csrfToken = req.csrfToken(); // Biến csrfToken cho tất cả các view
     next();
 }); // res.locals là biến cục bộ thêm vào tất cả các view
+app.use(flash()); // Sử dụng middleware flash trên đối tượng req dùng cho cả ứng dụng
 
 // Các Routes
 app.use(staffRoutes);
