@@ -4,16 +4,17 @@
 
 <body>
     <%- include('includes/navigation.ejs') %>
-    <main class="card centered grid">
-        <div class="card__image">
-            <img src="<%= staff.imageUrl %>" alt="<%= staff.name %>" />
-            <h1>Họ và tên: <%= staff.name %></h1>
-        </div>
-        <div class="card__content">
+    <main class="card centered">
+        <h1>Thông tin nhân viên</h1>
+        <div class="card__content grid">
             <form class="product-form" action="/edit-staff" method="POST">
                 <div class="form-control">
                     <label for="name">Họ và tên</label>
                     <input type="text" name="name" id="name" value="<%= staff.name %>" readonly>
+                </div>
+                <div class="form-control">
+                    <label for="staffId">Mã nhân viên</label>
+                    <input type="text" name="staffId" id="staffId" value="<%= staff.user_id.staffId %>" readonly>
                 </div>
                 <div class="form-control">
                     <label for="doB">Ngày sinh</label>
@@ -40,10 +41,15 @@
                     <label for="imageUrl">Link hình ảnh</label>
                     <input type="text" name="imageUrl" id="imageUrl" value="<%= staff.imageUrl %>">
                 </div>
-                <input type="hidden" value="<%= staff._id %>" name="_id">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button class="btn" type="submit">Thay đổi ảnh cá nhân</button>
+                <% if (!user.isManager) { %>
+                    <input type="hidden" value="<%= staff._id %>" name="_id">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn" type="submit">Thay đổi ảnh cá nhân</button>
+                <% } %>
             </form>
+        </div>
+        <div class="card__image">
+            <img src="<%= staff.imageUrl %>" alt="<%= staff.name %>" />
         </div>
     </main>
 

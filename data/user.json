@@ -1,22 +1,26 @@
 [
     {
-        "userId": "QL1",
+        "_id": { "$oid": "6273a8267a67c7fad4b43c17" },
+        "staffId": "QL1",
         "password": "$2a$12$.MX/jv7zELvzkCxpyYN7mOB3h.vR8KoPsp6X4FrtUh80USOg26g5G",
-        "position": "Manager"
+        "isManager": true
     },
     {
-        "userId": "QL2",
+        "_id": { "$oid": "6273a8267a67c7fad4b43c18" },
+        "staffId": "QL2",
         "password": "$2a$12$.MX/jv7zELvzkCxpyYN7mOB3h.vR8KoPsp6X4FrtUh80USOg26g5G",
-        "position": "Manager"
+        "isManager": true
     },
     {
-        "userId": "NV1",
+        "_id": { "$oid": "6273a8267a67c7fad4b43c19" },
+        "staffId": "NV1",
         "password": "$2a$12$.MX/jv7zELvzkCxpyYN7mOB3h.vR8KoPsp6X4FrtUh80USOg26g5G",
-        "position": "Staff"
+        "isManager": false
     },
     {
-        "userId": "NV2",
+        "_id": { "$oid": "6273a8267a67c7fad4b43c1a" },
+        "staffId": "NV2",
         "password": "$2a$12$.MX/jv7zELvzkCxpyYN7mOB3h.vR8KoPsp6X4FrtUh80USOg26g5G",
-        "position": "Staff"
+        "isManager": false
     }
 ]

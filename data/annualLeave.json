@@ -1,0 +1,16 @@
+[
+    {
+        "staffId": { "$oid": "6267c9c6738d01299e1c1a2b" },
+        "confirm": false,
+        "date": "2022-01-01",
+        "register": 0.25,
+        "reason": "aaaaa"
+    },
+    {
+        "staffId": { "$oid": "6267c9c6738d01299e1c1a2c" },
+        "confirm": false,
+        "date": "2022-01-02",
+        "register": 0.25,
+        "reason": "bbbbb"
+    }
+]

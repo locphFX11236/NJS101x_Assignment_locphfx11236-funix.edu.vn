@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
     .get( // Sử dụng phương thức get để thực hiện router
-        '/check/:_id', // Bắt lấy path này
+        '/check/:staff_id', // Bắt lấy path này
         isAuth, // Bảo vệ router
         checkController.getIndex // Lấy function getIndex để xử lý router
     )
@@ -15,6 +15,8 @@ router
 // Tương tự với các router còn lại
 router.post('/post-begin', isAuth, checkController.postBegin);
 router.post('/post-end', isAuth, checkController.postEnd);
-router.post('/post-annualLeave', isAuth, checkController.postAnLeRe);
+router.post('/confirmWork', isAuth, checkController.confirmWork);
+router.get('/annualLeave/:staff_id', isAuth, checkController.getAL);
+// router.post('/post-annualLeave', isAuth, checkController.postAnLeRe);
 
 module.exports = router;

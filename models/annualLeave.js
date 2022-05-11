@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const annualLeaveSchema = new Schema({
-    _id: {
+    staffId: {
         type: Schema.Types.ObjectId,
         ref: 'Staff',
         required: true

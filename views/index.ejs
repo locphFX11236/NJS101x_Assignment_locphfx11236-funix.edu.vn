@@ -9,24 +9,31 @@
         <div class="grid">
             <% for (let staff of staffs) { %>
                 <article class="card staff-item">
-                    <div class="card__image">
-                        <img src="<%= staff.imageUrl %>" alt="<%= staff.title %>">
-                    </div>
                     <a class="card__content" href="/staff/<%= staff._id %>" class="btn">
+                        <div class="card__image">
+                            <img src="<%= staff.imageUrl %>" alt="<%= staff.title %>">
+                        </div>
                         <p class="staff__description">
                             <%= staff.name %>
                         </p>
                     </a>
                     <div class="card__actions">
-                        <form action="/check/<%= staff._id %>" method="get">
-                            <button class="btn" type="submit">Điểm danh</button>
-                        </form>
-                        <form action="/salary/<%= staff._id %>" method="get">
-                            <button class="btn" type="submit">Thông tin lương</button>
-                        </form>
-                        <form action="/covid/<%= staff._id %>" method="get">
+                        <a href="/check/<%= staff._id %>" class="btn">
+                            <%= user.isManager ? "Xác nhận điểm danh" : "Điểm danh" %>
+                        </a>
+                        <a href="/annualLeave/<%= staff._id %>" class="btn">
+                            <%= user.isManager ? "Xác nhận nghĩ phép" : "Đăng ký ghĩ phép" %>
+                        </a>
+                        <!-- <form action="/covid" method="get">
+                            <input type="hidden" value="<%= staff._id %>" name="_id">
                             <button class="btn" type="submit">Thông tin covid-19</button>
                         </form>
+                        <% if (!user.isManager) { %>
+                            <form action="/salary" method="get">
+                                <input type="hidden" value="<%= staff._id %>" name="_id">
+                                <button class="btn" type="submit">Thông tin lương</button>
+                            </form>
+                        <% } %> -->
                     </div>
                 </article>
             <% } %>

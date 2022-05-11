@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    userId: {
+    staffId: {
         type: String,
         required: true
     },
@@ -11,8 +11,8 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    position: {
-        type: String,
+    isManager: {
+        type: Boolean,
         required: true
     }
 });

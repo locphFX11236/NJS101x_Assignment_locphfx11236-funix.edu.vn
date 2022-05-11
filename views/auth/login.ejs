@@ -14,16 +14,31 @@
 
         <!-- Form đăng nhập -->
         <form class="login-form centered" action="/login" method="POST">
-            <h3>Đăng nhập tài khoản quản lý</h3>
+            <h3>Đăng nhập tài khoản</h3>
             <div class="form-control">
-                <label for="userId">ID (Mã nhân viên)</label>
-                <input type="text" name="userId" id="userId">
+                <label for="staffId">ID (Mã nhân viên)</label>
+                <input
+                    class="<%= validationErrors.find(e => e.param === 'staffId') ? 'invalid' : '' %>"
+                    type="staffId"
+                    name="staffId"
+                    id="staffId"
+                    value="<%= oldInput.staffId %>"
+                >
             </div>
             <div class="form-control">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password">
+                <input
+                    class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>"
+                    type="password"
+                    name="password"
+                    id="password"
+                    value="<%= oldInput.password %>"
+                >
             </div>
+
+            <!-- CSRF protection -->
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
             <button class="btn" type="submit">Login</button>
         </form>
     </main>

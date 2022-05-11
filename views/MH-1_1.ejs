@@ -1,0 +1,63 @@
+<%- include('includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/staff.css">
+    <link rel="stylesheet" href="/css/form.css">
+</head>
+
+<body>
+    <%- include('includes/navigation.ejs') %>
+    <main class="centered">
+        <section class="grid">
+            <div class="card">
+                <h2>Thông tin làm việc hiện tại:</h2>
+                <h3>Tên: <%= workTimes[i].staff_id.name %></h3>
+                <p>Trạng thái: <%= workTimes[i].state ? 'Đang làm việc!' : 'Chưa làm việc!' %></p>
+                <p>Thời gian bắt đầu: <%= workTimes[i].begin %></p>
+                <p>Thời gian kết thúc: <%= workTimes[i].end %></p>
+                <p>Thời gian đã làm việc trong ngày: <%= workTimes[i].workTime %></p>
+                <form action="/post-begin" method="post">
+                    <div class="form-control">
+                        <label for="at">Nơi làm việc:</label>
+                        <input type="text" name="at" id="at" value="<%= workTimes[i].at %>" <%= user.isManager ? 'readonly' : null %> >
+                    </div>
+                    <% if (!user.isManager) { %>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="hidden" value="<%= workTimes[i].staff_id._id %>" name="staff_id">
+                        <button class="btn" type="submit" <%= workTimes[i].state ? 'disabled' : null %> >Điểm danh bắt đầu</button>
+                    <% } %>
+                </form>
+                <% if (!user.isManager) { %>
+                    <form action="/post-end" method="post">
+                        <input type="hidden" value="<%= workTimes[i].staff_id._id %>" name="staff_id">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button class="btn" type="submit" <%= workTimes[i].state ? null : 'disabled' %> >Điểm danh kết thúc</button>
+                    </form>
+                <% } %>
+            </div>
+        </section>
+        <section class="card">
+            <h3>Danh sách các phiên làm việc trong ngày</h3>
+            <% if (i > 0) { %>
+                <div class="grid">
+                    <% for (let workTime of workTimes) { %>
+                        <div class="card">
+                            <p>Phiên làm việc bắt đầu lúc: <%= workTime.begin %></p>
+                            <p>Kết thúc lúc: <%= workTime.end %></p>
+                            <p>Tại: <%= workTime.at %></p>
+                            <% if (user.isManager & workTime.confirm === false) { %>
+                                <form action="/confirmWork" method="post">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <input type="hidden" value="<%= workTime.staff_id._id %>" name="staff_id">
+                                    <input type="hidden" name="workTime_id" value="<%= workTime._id %>">
+                                    <button class="btn" type="submit">Xác nhận làm việc</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </div>
+            <% } else { %>
+                <p class="card">Hôm nay chưa bắt đầu làm việc!</p>
+            <% } %>
+        </section>
+    </main>
+
+<%- include('includes/end.ejs') %>

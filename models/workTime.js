@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const workTimeSchema = new Schema({
-    _id: {
+    staff_id: {
         type: Schema.Types.ObjectId,
         ref: 'Staff',
         required: true
@@ -12,12 +12,12 @@ const workTimeSchema = new Schema({
         type: Boolean,
         required: true
     },
-    date: {
-        type: String,
-        required: true
-    },
     state: {
         type: Boolean,
+        required: true
+    },
+    date: {
+        type: String,
         required: true
     },
     workTime: {
@@ -35,22 +35,27 @@ const workTimeSchema = new Schema({
     at: {
         type: String,
         required: true
+    },
+    __v: {
+        type: Number,
+        required: true
     }
 });
 
-// workSchema.methods.editWork = function(newWorking, dateWork) {
-//     if (this.working[0].end !== 'Chưa ghi nhận!') { // Tạo mới phiên
-//         if (this.working[0].date !== dateWork) {
-//             this.working.unshift(newWorking);
-//             this.working[1].state = false;
-//             this.working[0].workTime = '00:00' + '/' + this.working[1].workTime.slice(-5);
-//         } else {
-//             this.working.unshift(newWorking);
-//         }
-//     } else { // Nếu phiên làm việc đã đc tạo trước đó
-//         this.working[0] = newWorking;
-//     }
-//     this.save();
+// workTimeSchema.methods.endWork = function() {
+//     console.log(this)
+//     // if (this.working[0].end !== 'Chưa ghi nhận!') { // Tạo mới phiên
+//     //     if (this.working[0].date !== dateWork) {
+//     //         this.working.unshift(newWorking);
+//     //         this.working[1].state = false;
+//     //         this.working[0].workTime = '00:00' + '/' + this.working[1].workTime.slice(-5);
+//     //     } else {
+//     //         this.working.unshift(newWorking);
+//     //     }
+//     // } else { // Nếu phiên làm việc đã đc tạo trước đó
+//     //     this.working[0] = newWorking;
+//     // }
+//     // this.save();
 //     return this;
 // };
 

@@ -63,7 +63,7 @@ app.use(flash()); // Sử dụng middleware flash trên đối tượng req dùn
 
 // Các Routes
 app.use(staffRoutes);
-// app.use(checkRoutes);
+app.use(checkRoutes);
 // app.use(salaryRoutes);
 // app.use(covidRoutes);
 app.use(authRoutes);

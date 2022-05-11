@@ -1,21 +1,34 @@
 const Staff = require('../models/staff');
 
 exports.getIndex = (req, res, next) => {
-    if (!req.session.user) {
+    const user = req.session.user;
+
+    if (!user) {
         return res.redirect('/login');
     } else {
-        const managerId = req.session.user.userId;
-        Staff
-            .find({"managerId": managerId})
+        let findStaff;
+        
+        if (user.isManager) {
+            findStaff = { "managerId": user.staffId };
+        } else {
+            findStaff = { "user_id": user._id };
+        };
+
+        return Staff
+            .find(findStaff)
             .then(staffs => {
                 res.render(
                     'index', // Đến file index theo app.set là 'ejs', 'views'
                     {
+                        user: user,
                         staffs: staffs,
-                        pageTitle: 'Danh sách nhân viên', // Page Title
+                        pageTitle: 'Nhân viên', // Page Title
                         path: '/' // Để truy cập view trên trình duyệt
                     }
                 );
+            })
+            .then(result => {
+                console.log('STAFF!');
             })
             .catch(err => {
                 console.error(err);
@@ -26,17 +39,24 @@ exports.getIndex = (req, res, next) => {
 
 exports.getStaffWithId = (req, res, next) => {
     const _id = req.params._id;
-    Staff
+    const user = req.session.user;
+
+    return Staff
         .findById(_id)
+        .populate('user_id', 'staffId')
         .then(staff => {
             return res.render(
                 'MH-2', // Đến file MH-2 theo app.set là 'ejs', 'views'
                 {
+                    user: user,
                     staff: staff,
                     pageTitle: 'Thông tin nhân viên', // Page Title
-                    path: '/staff' // Để truy cập view trên trình duyệt
+                    path: '/staff/:_id' // Để truy cập view trên trình duyệt
                 }
             );
+        })
+        .then(result => {
+            console.log('STAFF INFORMATION!');
         })
         .catch(err => {
             console.error(err);
@@ -47,23 +67,11 @@ exports.getStaffWithId = (req, res, next) => {
 exports.postEditStaff = (req, res, next) => {
     const _id = req.body._id;
     const updatedImageUrl = req.body.imageUrl;
-    const name = req.body.name;
-    const doB = req.body.doB;
-    const salaryScale = req.body.salaryScale;
-    const startDate = req.body.startDate;
-    const department = req.body.department;
-    const annualLeave = req.body.annualLeave;
     
     Staff
         .findById(_id)
         .then(staff => {
             staff.imageUrl = updatedImageUrl;
-            staff.name = name;
-            staff.doB = doB;
-            staff.salaryScale = salaryScale;
-            staff.startDate = startDate;
-            staff.department = department;
-            staff.annualLeave = annualLeave;
             return staff.save()
         })
         .then(result => {
