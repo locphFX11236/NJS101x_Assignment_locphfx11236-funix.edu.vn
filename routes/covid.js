@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
     .get( // Sử dụng phương thức get để thực hiện router
-        '/covid/:_id', // Bắt lấy path này
+        '/covid/:staff_id', // Bắt lấy path này
         isAuth, // Bảo vệ router
         CovidController.getIndex // Lấy function getIndex để xử lý router
     )

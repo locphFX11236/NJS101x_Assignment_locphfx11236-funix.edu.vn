@@ -17,15 +17,15 @@
             </li>
             <!-- <li class="main-header__item">
                 <a class="<%= path === '/salary' ? 'active' : '' %>" href="/salary">Chi tiết lương</a>
-            </li>
+            </li> -->
             <% if (isAuthenticated) { %>
                 <li class="main-header__item">
-                    <a class="<%= path === '/covid' ? 'active' : '' %>" href="/covid">Thông tin covid</a>
+                    <a class="<%= path === '/covid/:staff_id' ? 'active' : '' %>" <%= path === '/covid/:staff_id' ? '' : 'hidden' %> >Thông tin covid</a>
                 </li>
-                <li class="main-header__item">
+                <!-- <li class="main-header__item">
                     <a class="<%= path === '/salary' ? 'active' : '' %>" href="/manager-view">Xác nhận của quản lý</a>
-                </li>
-            <% } %> -->
+                </li> -->
+            <% } %>
         </ul>
         <ul class="main-header__item-list">
             <% if (!isAuthenticated) { %>

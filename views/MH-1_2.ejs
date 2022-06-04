@@ -8,46 +8,56 @@
     <main class="centered">
         <section class="grid">
             <div class="card">
-                <h2>Đăng ký nghĩ phép</h2>
-                <form action="/post-annualLeave" method="post">
-                    <div class="form-control">
-                        <label for="aLDate">Chọn ngày:</label>
-                        <input type="date" name="aLDate" id="aLDate">
-                    </div>
-                    <div class="form-control">
-                        <label for="aLHour">Chọn số giờ nghĩ:</label>
-                        <input type="number" name="aLHour" id="aLHour" min="0" max="8" step="0.25">
-                    </div>
-                    <div class="form-control">
-                        <label for="LD">Lý do:</label>
-                        <textarea name="LD" id="LD" rows="3" cols="40"></textarea>
-                    </div>
-                    <% if (!user.isManager) { %>
-                        <input type="hidden" value="<%= work.staffId %>" name="_id">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button class="btn" type="submit" >Đăng ký nghĩ phép</button>
-                    <% } %>
-                </form>
+                <h3><%= (!user.isManager) ? 'Đăng ký nghĩ phép' : 'Thông tin nghĩ phép' %></h3>
+                <p>Số ngày nghĩ phép còn lại: <%= annu.annualLeave %> ngày</p>
+                <% if (!user.isManager) { %>
+                    <p>Bạn <%= (annu.annualLeave <= 0) ? 'không thể' : 'có thể' %> đăng ký nghĩ phép</p>
+                <% } %>
+                <% if (!user.isManager) { %>
+                    <form action="/post-annualLeave" method="post">
+                        <div class="form-control">
+                            <label for="leaveDate">Chọn ngày:</label>
+                            <input type="date" name="leaveDate" id="leaveDate">
+                        </div>
+                        <div class="form-control">
+                            <label for="leaveHour">Chọn số giờ nghĩ:</label>
+                            <input type="number" name="leaveHour" id="leaveHour" min="0" max="8" step="0.25">
+                        </div>
+                        <div class="form-control">
+                            <label for="reason">Lý do:</label>
+                            <textarea name="reason" id="reason" rows="3" cols="40"></textarea>
+                        </div>
+                            <input type="hidden" value="<%= annu.staff_id %>" name="staff_id">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <button class="btn" type="submit" <%= (annu.annualLeave <= 0) ? 'disabled' : null %> >Đăng ký nghĩ phép</button>
+                    </form>
+                <% } %>
             </div>
         </section>
         <section class="card">
-            <h3>Thông tin nghĩ phép</h3>
-            <p>Số ngày nghĩ phép còn lại: </p>
-            <p>Bạn <%=  'không thể / có thể' %> đăng ký nghĩ phép</p>
             <h3>Danh sách đăng ký nghĩ trong ngày</h3>
-            <div class="grid">
-                <div class="card">
-                    <p>=========</p>
-                    <p>=========</p>
-                    <% if (user.isManager) { %>
-                        <form action="/confirmAnnu" method="post">
-                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <input type="hidden" name="_id" value="<%= work.staffId %>">
-                            <button class="btn" type="submit">Xác nhận nghĩ phép</button>
-                        </form>
+            <% if (annu.regInformation.length > 0) { %>
+                <div class="grid">
+                    <% for (let regInfor of annu.regInformation) { %>
+                        <div class="card">
+                            <p>Ngày đăng kí nghĩ phép: <%= regInfor.leaveDate %></p>
+                            <p>Thời gian đăng kí: <%= regInfor.register %> ngày</p>
+                            <p>Lí do nghĩ: <%= regInfor.reason %></p>
+                            <p><%= regInfor.confirm ? 'Đã xác nhận' : 'Chưa xác nhận' %></p>
+                            <% if (user.isManager && regInfor.confirm === false) { %>
+                                <form action="/confirmAnnu" method="post">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                    <input type="hidden" value="<%= regInfor._id %>" name="regInfor_id">
+                                    <input type="hidden" name="staff_id" value="<%= annu.staff_id %>">
+                                    <button class="btn" type="submit">Xác nhận nghĩ phép</button>
+                                </form>
+                            <% } %>
+                        </div>
                     <% } %>
                 </div>
-            </div>
+            <% } else { %>
+                <h4 class="centered">Chưa đăng kí nghĩ phép</h4>
+            <% } %>
         </section>
     </main>
 

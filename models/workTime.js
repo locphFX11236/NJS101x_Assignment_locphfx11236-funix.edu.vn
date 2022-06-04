@@ -24,6 +24,10 @@ const workTimeSchema = new Schema({
         type: String,
         required: true
     },
+    totalWorkTime: {
+        type: String,
+        required: true
+    },
     begin: {
         type: String,
         required: true

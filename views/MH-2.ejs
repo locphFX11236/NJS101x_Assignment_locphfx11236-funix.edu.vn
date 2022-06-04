@@ -39,7 +39,7 @@
                 <hr>
                 <div class="form-control">
                     <label for="imageUrl">Link hình ảnh</label>
-                    <input type="text" name="imageUrl" id="imageUrl" value="<%= staff.imageUrl %>">
+                    <input type="text" name="imageUrl" id="imageUrl" value="<%= staff.imageUrl %>" <%= user.isManager ? 'readonly' : null %> >
                 </div>
                 <% if (!user.isManager) { %>
                     <input type="hidden" value="<%= staff._id %>" name="_id">

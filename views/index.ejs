@@ -5,6 +5,7 @@
 
 <body>
     <%- include('includes/navigation.ejs') %>
+    <h2 class="centered"><%= user.isManager ? "Xác nhận thông tin" : "Thông tin cá nhân" %></h2>
     <% if (staffs.length > 0) { %>
         <div class="grid">
             <% for (let staff of staffs) { %>
@@ -13,22 +14,13 @@
                         <div class="card__image">
                             <img src="<%= staff.imageUrl %>" alt="<%= staff.title %>">
                         </div>
-                        <p class="staff__description">
-                            <%= staff.name %>
-                        </p>
+                        <p class="staff__description"><%= staff.name %></p>
                     </a>
                     <div class="card__actions">
-                        <a href="/check/<%= staff._id %>" class="btn">
-                            <%= user.isManager ? "Xác nhận điểm danh" : "Điểm danh" %>
-                        </a>
-                        <a href="/annualLeave/<%= staff._id %>" class="btn">
-                            <%= user.isManager ? "Xác nhận nghĩ phép" : "Đăng ký ghĩ phép" %>
-                        </a>
-                        <!-- <form action="/covid" method="get">
-                            <input type="hidden" value="<%= staff._id %>" name="_id">
-                            <button class="btn" type="submit">Thông tin covid-19</button>
-                        </form>
-                        <% if (!user.isManager) { %>
+                        <a href="/check/<%= staff._id %>" class="btn">Điểm danh</a>
+                        <a href="/annualLeave/<%= staff._id %>" class="btn">Đăng ký nghĩ phép</a>
+                        <a href="/covid/<%= staff._id %>" class="btn">Thông tin covid-19</a>
+                        <!-- <% if (!user.isManager) { %>
                             <form action="/salary" method="get">
                                 <input type="hidden" value="<%= staff._id %>" name="_id">
                                 <button class="btn" type="submit">Thông tin lương</button>

@@ -4,51 +4,90 @@
 
 <body>
     <%- include('includes/navigation.ejs') %>
-    <h1 class="centered">Họ và tên: <%= name %></h1>
-    <main class="centered grid">
-        <div class="card">
-            <form class="product-form" action="/post-vaccine" method="POST">
+    <main class="centered">
+        <div class="card grid">
+            <% if (!user.isManager) { %>
+                <form class="product-form" action="/post-vaccine" method="POST">
+                    <div class="form-control">
+                        <label for="ngayTiem">Ngày tiêm vaccin</label>
+                        <input type="date" name="ngayTiem" id="ngayTiem" placeholder="Nhập ngày tiêm">
+                    </div>
+                    <div class="form-control">
+                        <label for="loaiVaccine">Loại vaccin đã tiêm</label>
+                        <input type="text" name="loaiVaccine" id="loaiVaccine" placeholder="Nhập loại vaccine đã tiêm">
+                    </div>
+                    <input type="hidden" value="<%= covids.staff_id %>" name="staff_id">
+                    <input type="hidden" value="<%= covids._id %>" name="_id">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn" type="submit">Đăng kí thông tin tiêm vaccin</button>
+                </form>
+            <% } %>
+            <div class="card">
                 <h3>Thông tin tiêm vaccin</h3>
-                <div class="form-control">
-                    <label for="ngayTiem">Ngày tiêm vaccin</label>
-                    <input type="date" name="ngayTiem" id="ngayTiem" placeholder="Nhập ngày tiêm">
-                </div>
-                <div class="form-control">
-                    <label for="loaiVaccine">Loại vaccin đã tiêm</label>
-                    <input type="text" name="loaiVaccine" id="loaiVaccine" placeholder="Nhập loại vaccine đã tiêm">
-                </div>
-                <input type="hidden" value="<%= covid._id %>" name="_id">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button class="btn" type="submit">Đăng kí thông tin tiêm vaccin</button>
-            </form>
+                <% if (covids.vaccine.length > 0) { %>
+                    <% for (let vac of covids.vaccine) { %>
+                        <p>Tiêm vaccin vào ngày: <%= vac.dateVac %>, vaccin: <%= vac.typeVac %></p>
+                    <% } %>
+                    <p>Xuất file PDF</p>
+                <% } else { %>
+                    <p>Chưa có thông tin!</p>
+                <% } %>
+            </div>
         </div>
-        <div class="card">
-            <form class="product-form" action="/post-xn" method="POST">
+        <div class="card grid">
+            <% if (!user.isManager) { %>
+                <form class="product-form" action="/post-xn" method="POST">
+                    <div class="form-control">
+                        <label for="xetNghiem">Kết quả xét nghiệm dương tính vào ngày</label>
+                        <input type="date" name="ngayXN" id="ngayXN" placeholder="Nhập ngày xét nghiệm dương tính">
+                    </div>
+                    <input type="hidden" value="<%= covids.staff_id %>" name="staff_id">
+                    <input type="hidden" value="<%= covids._id %>" name="_id">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn" type="submit">Đăng kí thông tin bệnh</button>
+                </form>
+            <% } %>
+            <div class="card">
                 <h3>Thông tin bệnh</h3>
-                <div class="form-control">
-                    <label for="xetNghiem">Kết quả xét nghiệm dương tính vào ngày</label>
-                    <input type="date" name="ngayXN" id="ngayXN" placeholder="Nhập ngày xét nghiệm dương tính">
-                </div>
-                <input type="hidden" value="<%= covid._id %>" name="_id">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button class="btn" type="submit">Đăng kí thông tin bệnh</button>
-            </form>
+                <% if (covids.datePositive.length > 0) { %>
+                    <p>Ngày dương tính:</p>
+                    <% for (let daPos of covids.datePositive) { %>
+                        <p><%= daPos %></p>
+                    <% } %>
+                    <p>Xuất file PDF</p>
+                <% } else { %>
+                    <p>Chưa có thông tin!</p>
+                <% } %>
+            </div>
         </div>
-        <div class="card">
-            <form class="product-form" action="/post-nd" method="POST">
+        <div class="card grid">
+            <% if (!user.isManager) { %>
+                <form class="product-form" action="/post-nd" method="POST">
+                    <div class="form-control">
+                        <label for="nhietDo">Nhiệt Độ (oC)</label>
+                        <input type="text" name="nhietDo" id="nhietDo" value="37">
+                    </div>
+                    <div class="form-control">
+                        <label for="ngayDoTem">Ngày đo nhiệt độ</label>
+                        <input type="date" name="ngayDoTem" id="ngayDoTem">
+                    </div>
+                    <input type="hidden" value="<%= covids.staff_id %>" name="staff_id">
+                    <input type="hidden" value="<%= covids._id %>" name="_id">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn" type="submit">Đăng kí thông tin thân nhiệt</button>
+                </form>
+            <% } %>
+            <div class="card">
                 <h3>Thông tin thân nhiệt</h3>
-                <div class="form-control">
-                    <label for="nhietDo">Nhiệt Độ (oC)</label>
-                    <input type="text" name="nhietDo" id="nhietDo" value="37">
-                </div>
-                <div class="form-control">
-                    <label for="ngayDoTem">Ngày đo nhiệt độ</label>
-                    <input type="date" name="ngayDoTem" id="ngayDoTem">
-                </div>
-                <input type="hidden" value="<%= covid._id %>" name="_id">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button class="btn" type="submit">Đăng kí thông tin thân nhiệt</button>
-            </form>
+                <% if (covids.tempBody.length > 0) { %>
+                    <% for (let teBo of covids.tempBody) { %>
+                        <p>Ngày: <%= teBo.dateTemp %>, nhiệt độ: <%= teBo.temp %></p>
+                    <% } %>
+                    <p>Xuất file PDF</p>
+                <% } else { %>
+                    <p>Chưa có thông tin!</p>
+                <% } %>
+            </div>
         </div>
     </main>
 

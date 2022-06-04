@@ -12,14 +12,12 @@ const flash = require('connect-flash');
 
 // Liên kết các file trong app
 const rootDir = require('./util/path');
+const authRoutes = require('./routes/auth');
 const staffRoutes = require('./routes/staff');
 const checkRoutes = require('./routes/check');
-const salaryRoutes = require('./routes/salary');
+// const salaryRoutes = require('./routes/salary');
 const covidRoutes = require('./routes/covid');
 const errorController = require('./controllers/error');
-const authRoutes = require('./routes/auth');
-const Staff = require('./models/staff');
-const User = require('./models/user');
 
 const MONGODB_URI = 'mongodb://localhost:27017/appStaff'; // Uri liên kết mongodb
 const app = express(); // Sử dụng framework express.js
@@ -65,14 +63,14 @@ app.use(flash()); // Sử dụng middleware flash trên đối tượng req dùn
 app.use(staffRoutes);
 app.use(checkRoutes);
 // app.use(salaryRoutes);
-// app.use(covidRoutes);
+app.use(covidRoutes);
 app.use(authRoutes);
 app.use(errorController.get404); // Xử lý lổi 404
 
 // Kết nối với database bằng mongoose
 mongoose
     .connect(MONGODB_URI) // Kết nối database
-    .then(result => {
+    .then(() => {
         app.listen(3000); // Sử dụng cổng 3000 của localhost để chạy app
     })
     .catch(err => {

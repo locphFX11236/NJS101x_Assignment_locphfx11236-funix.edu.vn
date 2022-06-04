@@ -3,14 +3,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const covidSchema = new Schema({
-    staffId: {
+    staff_id: {
         type: Schema.Types.ObjectId,
         ref: 'Staff',
         required: true
     },
     vaccine: [{
         dateVac: {
-            type: Date,
+            type: String,
             required: true
         },
         typeVac: {
@@ -19,12 +19,12 @@ const covidSchema = new Schema({
         }
     }],
     datePositive: [{
-        type: Date,
+        type: String,
         required: true
     }],
     tempBody: [{
         dateTemp: {
-            type: Date,
+            type: String,
             required: true
         },
         temp: {

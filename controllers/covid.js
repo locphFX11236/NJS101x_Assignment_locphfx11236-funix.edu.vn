@@ -1,85 +1,96 @@
 const Covid = require('../models/covid');
+const handle = require('../models/handle');
 
 exports.getIndex = (req, res, next) => {
-    const _id = req.params._id;
-    const name = req.staffName;
+    const staff_id = req.params.staff_id;
+    const user = req.session.user;
+
     Covid
-        .findById(_id)
+        .findOne({ 'staff_id': staff_id })
         .then(cov => {
             if (!cov) {
-                // Neu khong
-                const covid = new Covid({
-                    _id: _id,
+                const newCovid = new Covid({
+                    staff_id: _id,
                     vaccine: [],
                     datePositive: [],
                     tempBody: []
-                })
-                return covid.save();
+                });
+                newCovid.save();
+                return newCovid;
             }
+            return cov;
+        })
+        .then(cov => {
             return res.render(
                 'MH-4', // Đến file MH-4 theo app.set là 'ejs', 'views'
                 {
-                    name: name,
-                    covid: cov,
+                    covids: cov,
+                    user: user,
                     pageTitle: 'Thông tin covid-19', // Page Title
-                    path: '/covid' // Để truy cập view trên trình duyệt
+                    path: '/covid/:staff_id' // Để truy cập view trên trình duyệt
                 }
             );
         })
         .catch(err => {
-            console.error(__dirname, "10", err);
+            console.error('GET COVID INFORMATION! ERROR: ', err);
         })
     ;
 }
 
-exports.postVaccine = (req, res, next) => {
+exports.postVaccine = async (req, res, next) => {
     const _id = req.body._id;
+    const staff_id = req.body.staff_id;
+    const dateVac = req.body.ngayTiem.toString();
+    const typeVac = req.body.loaiVaccine;
     const newVac = {
-        dateVac: req.body.ngayTiem,
-        typeVac: req.body.loaiVaccine
+        dateVac: dateVac,
+        typeVac: typeVac
     }
     
-    Covid
+    return Covid
         .findById(_id)
         .then((cov) => {
             cov.vaccine.push(newVac);
             return cov.save();
         })
-        .then(result => {
-          console.log(result);
-          res.redirect('/');
+        .then(() => {
+            console.log('ADDED!');
+            return res.redirect('/covid/' + staff_id);
         })
-        .catch(err => console.log(__dirname, err))
+        .catch(err => console.log('ADD VACCINE! ERROR: ', err))
     ;
 }
 
-exports.postXN = (req, res, next) => {
+exports.postXN = async (req, res, next) => {
     const _id = req.body._id;
-    const ngayXN = req.body.ngayXN;
-    const datePos = new Date();
+    const staff_id = req.body.staff_id;
+    const ngayXN = req.body.ngayXN.toString();
+    const datePos = handle.handleTime.D_M_YPrint();
     
-    Covid
+    return Covid
         .findById(_id)
         .then((cov) => {
-            if (ngayXN) {
-                cov.datePositive.push(ngayXN);
+            if (!ngayXN) {
+                cov.datePositive.push(datePos);
                 return cov.save();
             } else {
-                cov.datePositive.push(datePos);
+                cov.datePositive.push(ngayXN);
                 return cov.save();
             }
         })
-        .then(result => {
-          console.log(result);
-          res.redirect('/');
+        .then(() => {
+            console.log('ADDED!');
+            return res.redirect('/covid/' + staff_id);
         })
-        .catch(err => console.log(__dirname, err))
+        .catch(err => console.log('NOT ADD!', err))
     ;
 }
 
 exports.postND = (req, res, next) => {
     const _id = req.body._id;
-    const ngayDoTem = req.body.ngayDoTem;
+    const staff_id = req.body.staff_id;
+    const ngayDoTem = req.body.ngayDoTem.toString();
+    const dateTemp = handle.handleTime.D_M_YPrint();
     let newTemp;
 
     if (ngayDoTem) {
@@ -89,21 +100,21 @@ exports.postND = (req, res, next) => {
         }
     } else {
         newTemp = {
-            dateTemp: new Date(),
+            dateTemp: dateTemp,
             temp: req.body.nhietDo
         }
     }
     
-    Covid
+    return Covid
         .findById(_id)
         .then((cov) => {
             cov.tempBody.push(newTemp);
             return cov.save();
         })
-        .then(result => {
-          console.log(result);
-          res.redirect('/');
+        .then(() => {
+            console.log('ADDED!');
+            return res.redirect('/covid/' + staff_id);
         })
-        .catch(err => console.log(__dirname, err))
+        .catch(err => console.log('NOT ADD!', err))
     ;
 }

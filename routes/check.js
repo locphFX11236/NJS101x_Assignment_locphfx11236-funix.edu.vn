@@ -17,6 +17,7 @@ router.post('/post-begin', isAuth, checkController.postBegin);
 router.post('/post-end', isAuth, checkController.postEnd);
 router.post('/confirmWork', isAuth, checkController.confirmWork);
 router.get('/annualLeave/:staff_id', isAuth, checkController.getAL);
-// router.post('/post-annualLeave', isAuth, checkController.postAnLeRe);
+router.post('/post-annualLeave', isAuth, checkController.postAnLeRe);
+router.post('/confirmAnnu', isAuth, checkController.confirmAnnu);
 
 module.exports = router;

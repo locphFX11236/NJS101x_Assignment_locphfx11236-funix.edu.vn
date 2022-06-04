@@ -3,27 +3,37 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const annualLeaveSchema = new Schema({
-    staffId: {
+    staff_id: {
         type: Schema.Types.ObjectId,
         ref: 'Staff',
         required: true
     },
-    confirm: {
-        type: Boolean,
-        required: true
-    },
-    date: {
-        type: String,
-        required: true
-    },
-    register: {
+    annualLeave: {
         type: Number,
         required: true
     },
-    reason: {
-        type: String,
-        required: true
-    }
+    regInformation: [ {
+        confirm: {
+            type: Boolean,
+            required: true
+        },
+        regDate: {
+            type: String,
+            required: true
+        },
+        leaveDate: {
+            type: String,
+            required: true
+        },
+        register: {
+            type: Number,
+            required: true
+        },
+        reason: {
+            type: String,
+            required: true
+        }
+    } ]
 });
 
 // workSchema.methods.addAnnualLeave = function(newReg) {

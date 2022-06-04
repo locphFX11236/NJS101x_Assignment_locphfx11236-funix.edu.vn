@@ -13,7 +13,8 @@
                 <p>Trạng thái: <%= workTimes[i].state ? 'Đang làm việc!' : 'Chưa làm việc!' %></p>
                 <p>Thời gian bắt đầu: <%= workTimes[i].begin %></p>
                 <p>Thời gian kết thúc: <%= workTimes[i].end %></p>
-                <p>Thời gian đã làm việc trong ngày: <%= workTimes[i].workTime %></p>
+                <p>Thời gian đã làm việc trong phiên: <%= workTimes[i].workTime %></p>
+                <p>Thời gian đã làm việc trong ngày: <%= workTimes[i].totalWorkTime %></p>
                 <form action="/post-begin" method="post">
                     <div class="form-control">
                         <label for="at">Nơi làm việc:</label>
@@ -36,14 +37,15 @@
         </section>
         <section class="card">
             <h3>Danh sách các phiên làm việc trong ngày</h3>
-            <% if (i > 0) { %>
+            <% if (i >= 0) { %>
                 <div class="grid">
                     <% for (let workTime of workTimes) { %>
                         <div class="card">
                             <p>Phiên làm việc bắt đầu lúc: <%= workTime.begin %></p>
                             <p>Kết thúc lúc: <%= workTime.end %></p>
                             <p>Tại: <%= workTime.at %></p>
-                            <% if (user.isManager & workTime.confirm === false) { %>
+                            <p><%= workTime.confirm ? 'Đã xác nhận' : 'Chưa xác nhận' %></p>
+                            <% if (user.isManager && workTime.confirm === false && workTime.begin !== 'Chưa ghi nhận!') { %>
                                 <form action="/confirmWork" method="post">
                                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                     <input type="hidden" value="<%= workTime.staff_id._id %>" name="staff_id">
