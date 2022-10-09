@@ -1,0 +1,64 @@
+[
+    {
+        "staff_id": { "$oid": "6278d8752aa467f9325d7674" },
+        "date": "2022-06-07",
+        "deltaWT": 2,
+        "annualLeave": 0,
+        "totalWorkTime": 10,
+        "workTimeList": [
+            {
+                "workTime": 4,
+                "begin": "08:00",
+                "end": "12:00",
+                "at": "Công ty"
+            },
+            {
+                "workTime": 4,
+                "begin": "13:00",
+                "end": "17:00",
+                "at": "Công ty"
+            }
+        ],
+        "regAnnualLeave": []
+    },
+    {
+        "staff_id": { "$oid": "6278d8752aa467f9325d7674" },
+        "date": "2022-06-08",
+        "deltaWT": -1,
+        "annualLeave": 1,
+        "totalWorkTime": 6,
+        "workTimeList": [
+            {
+                "workTime": 3,
+                "begin": "08:00",
+                "end": "11:00",
+                "at": "Công ty"
+            },
+            {
+                "workTime": 3,
+                "begin": "13:00",
+                "end": "16:00",
+                "at": "Công ty"
+            }
+        ],
+        "regAnnualLeave": [
+            {
+                "register": 1,
+                "reason": "aaaa"
+            },
+            {
+                "register": 1,
+                "reason": "bbb"
+            }
+        ]
+    },
+    {
+        "staff_id": { "$oid": "6278d8752aa467f9325d7675" },
+        "date": "2022-06-08",
+        "deltaWT": 0,
+        "annualLeave": 0,
+        "totalWorkTime": 0,
+        "workTimeList": [],
+        "regAnnualLeave": []
+    }
+]

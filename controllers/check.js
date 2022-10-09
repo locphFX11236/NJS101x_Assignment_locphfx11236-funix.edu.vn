@@ -1,6 +1,8 @@
 const WorkTime = require('../models/workTime');
 const AnnualLeave = require('../models/annualLeave');
-const handle = require('../models/handle');
+const WorkData = require('../models/workData');
+const handle = require('../util/handle');
+const Staff = require('../models/staff');
 
 let i;
 
@@ -57,7 +59,8 @@ exports.getIndex = async (req, res, next) => {
                 });
                 newWorkTime.save();
                 workTimes.push(newWorkTime);
-                console.log('CREATING DATABASE!')
+                console.log('CREATING DATABASE!');
+                return workTimes;
             } else if (workTimes[i].__v === 1) { // Nếu đã kết thúc phiên trước thì tạo phiên mới
                 let totalWorkTime = workTimes[i].workTime;
                 if (i !== 0) { totalWorkTime = workTimes[i-1].totalWorkTime}; // Nếu là phiên đầu tiên thì lấy totalWorkTime = '00:00'
@@ -75,6 +78,7 @@ exports.getIndex = async (req, res, next) => {
                 });
                 newWorkTime.save();
                 workTimes.push(newWorkTime);
+                return workTimes;
             };
             return workTimes;
         })
@@ -90,7 +94,7 @@ exports.getIndex = async (req, res, next) => {
                     workTimes: workTimes,
                     pageTitle: 'Điểm danh', // Page Title
                     path: '/check/:staff_id' // Thuộc tính path truyền vào
-                }
+                } // Object chứa thuộc tính truyền vào file được gọi ở trên
             );
         })
         .catch(err => {
@@ -162,7 +166,7 @@ exports.postEnd = async (req, res, next) => {
             console.log(workTimes[i])
             return workTimes;
         })
-        .then(result => {
+        .then(() => {
             console.log('END!');
             return res.redirect('/check/' + staff_id);
         })
@@ -185,6 +189,46 @@ exports.confirmWork = async (req, res, next) => {
             workTime.save();
             return workTime;
         })
+        .then(async workTime => {
+            const newWTD = {
+                workTime: workTime.workTime,
+                begin: workTime.begin,
+                end: workTime.end,
+                at: workTime.at
+            };
+            const deltaWT = workTime.workTime - 8;
+            
+            return WorkData
+                .findOne({ $and: [
+                    { 'staff_id': staff_id },
+                    { 'date': dateWork }
+                ] })
+                .then(workData => {
+                    if (!workData) {
+                        const newWorkData = new WorkData({
+                            'staff_id': staff_id,
+                            'date': dateWork,
+                            'deltaWT': 0,
+                            'annualLeave': 0,
+                            'totalWorkTime': 0,
+                            'workTimeList': [],
+                            'regAnnualLeave': []
+                        });
+                        newWorkData.save();
+                        console.log('CREATING WORKDATA!');
+                        return newWorkData;
+                    };
+                    return workData;
+                })
+                .then(workData => {
+                    workData.deltaWT = deltaWT;
+                    workData.workTime.push(newWTD);
+                    workData.save();
+                    return console.log('ADDED WORKDATA!');
+                })
+                .catch(err => console.log('NOT ADDED WORKDATA!! ERROR: ', err))
+            ;
+        })
         .then(() => {
             console.log('CONFIRMED TO WORK TIME!');
             return res.redirect('/check/' + staff_id);
@@ -196,27 +240,39 @@ exports.confirmWork = async (req, res, next) => {
 exports.getAL = async (req, res, next) => {
     const staff_id = req.params.staff_id;
     const user = req.session.user;
+    let reqStaff;
+    // const dateWork = handle.handleTime.D_M_YPrint();
+
+    if (req.session.user.isManager) {
+        Staff
+            .findOne({ '_id': staff_id })
+            .then(staff => {
+                req.staff = staff
+                reqStaff = staff
+            })
+        ;
+    } else reqStaff = req.staff;
 
     return AnnualLeave
         .findOne({ 'staff_id': staff_id }) // Tìm thông tin bằng staff_id
-        .then(annu => {
-            if (!annu) { // Nếu chưa có database
-                const newAnnu = new AnnualLeave ({
+        .then(annu => { // Nếu hôm nay chưa có đăng kí
+            if (!annu) {
+                const newAnnu = new AnnualLeave({
                     staff_id: staff_id,
-                    annualLeave: 10,
+                    annualLeave: 9.5,
+                    regDate: "2022-01-02",
                     regInformation: []
                 });
-                newAnnu.save();
                 return newAnnu;
-            };
-            return annu;
+            } else return annu;
         })
-        .then(annu => {
+        .then(annus => {
             return res.render(
                 'MH-1_2', // Đến file index theo app.set là 'ejs', 'views'
                 {
-                    annu: annu,
-                    user: user,
+                    Annus: annus,
+                    User: user,
+                    Staff: reqStaff,
                     pageTitle: 'Nghĩ phép', // Page Title
                     path: '/annualLeave/:staff_id' // Thuộc tính path truyền vào
                 }
@@ -229,53 +285,56 @@ exports.getAL = async (req, res, next) => {
 }
 
 exports.postAnLeRe = async (req, res, next) => {
+    const dateReg = handle.handleTime.D_M_YPrint();
     const staff_id = req.body.staff_id;
     const leaveDate = req.body.leaveDate.toString();
     const leaveHour = req.body.leaveHour;
     const reason = req.body.reason;
-    const timeNow = handle.handleTime.H_MPrint(new Date())
-    const newregInfor = {
+    const newAnnualLeave = {
         confirm: false,
-        regDate: timeNow,
         leaveDate: leaveDate,
         register: leaveHour/8,
         reason: reason
-    }
+    };
 
     return AnnualLeave
-        .findOne({ 'staff_id': staff_id })
-        .then(annu => {
-            annu.regInformation.push(newregInfor);
-            annu.save();
-            return annu;
-        })
+        .findOne({ 'staff_id': staff_id }) // Tìm thông tin bằng staff_id
+        .then(annu => annu.addToAnnu(newAnnualLeave))
         .then(() => {
             console.log('Đăng ký nghĩ thành công!');
-            res.redirect('/');
+            return res.redirect('/');
         })
-        .catch(err => console.log('Đăng ký không thành công! Error:', err))
+        .catch(err => console.log('Đăng ký nghĩ không thành công! Error:', err))
     ;
 }
 
 exports.confirmAnnu = async (req, res, next) => {
-    const regInfor_id = req.body.regInfor_id;
+    const annu_id = req.body.annualLeave_id;
     const staff_id = req.body.staff_id;
-    
-    console.log(req.body);
+
     return AnnualLeave
         .findOne({ 'staff_id': staff_id })
-        .then(annu => {
-            const i = annu.regInformation.findIndex((regInfor) => regInfor._id == regInfor_id);
-            annu.regInformation[i].confirm = true;
-            annu.annualLeave -= annu.regInformation[i].register;
-            console.log(annu);
-            annu.save();
+        .then(annu => { // Xác nhận
+            const confIndex = annu.regInformation.findIndex((a) => a._id == annu_id);
+            annu.regInformation[confIndex].confirm = true; // Sửa confirm thành true
+            annu.annualLeave -= annu.regInformation[confIndex].register; // Tính annualLeave
+            annu.save(); // Lưu vào AnnualLeave
             return annu;
         })
-        .then(result => {
-            console.log('CONFIRMED TO LEAVE!');
-            return res.redirect('/annualLeave/' + staff_id);
+        .then(async annu => { // Đẩy annualLeave lên Staff
+            return await Staff
+                .findById(staff_id)
+                .then((staff) => {
+                    staff.annualLeave = annu.annualLeave;
+                    staff.save();
+                    console.log('UPDATE TO STAFF DATABASE!');
+                })
+            ;
         })
-        .catch(err => console.log('NOT CONFIRMED! ERROR: ', err));
+        .then(() => { // Thông báo
+            console.log('CONFIRMED TO LEAVE!');
+            return res.redirect('back');
+        })
+        .catch(err => console.log('NOT CONFIRMED! ERROR: ', err)); // Thông báo lỗi
     ;
 };

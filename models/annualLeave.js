@@ -12,13 +12,9 @@ const annualLeaveSchema = new Schema({
         type: Number,
         required: true
     },
-    regInformation: [ {
+    regInformation: [{
         confirm: {
             type: Boolean,
-            required: true
-        },
-        regDate: {
-            type: String,
             required: true
         },
         leaveDate: {
@@ -33,14 +29,13 @@ const annualLeaveSchema = new Schema({
             type: String,
             required: true
         }
-    } ]
+    }]
 });
 
-// workSchema.methods.addAnnualLeave = function(newReg) {
-//     this.annualLeave.anLeReg.push(newReg);
-//     this.annualLeave.total -= newReg.reg;
-//     this.save();
-//     return this;
-// }
+annualLeaveSchema.methods.addToAnnu = function(reg) {
+    this.regInformation.push(reg);
+    this.annualLeave -= reg.register;
+    return this.save();
+}
 
 module.exports = mongoose.model('AnnualLeave', annualLeaveSchema);

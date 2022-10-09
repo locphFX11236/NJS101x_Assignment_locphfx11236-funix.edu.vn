@@ -5,57 +5,76 @@
 <body>
     <%- include('includes/navigation.ejs') %>
     <main class="centered">
-        <div class="card">
-            <h3>Chi tiết lương tháng</h3>
-            <h4>Họ và tên: <%= name %></h4>
-            <form action="/post-seach-month" method="post">
-                <div class="form-control">
-                    <label for="seachMonth">Chọn tháng:</label>
-                    <input type="date" name="seachMonth" id="seachMonth">
-                </div>
-                <input type="hidden" value="<%= _id %>" name="_id">
+        <h2>Thông tin làm việc</h2>
+        <h3>Họ và tên: <%= Staff.name %></h3>
+        <!-- <div class="card">
+            <h4>Tính lương tháng:</h4>
+            <div style="display:inline-block">
+                <form class="grid" action="/post-search-salary" method="post">
+                    <div class="form-control card">
+                        <label for="seachMonth">Chọn tháng:</label>
+                        <input type="number" name="seachMonth" id="seachMonth" min="1" max="12" step="1" value=<%= 1 + new Date().getUTCMonth() %>>
+                    </div>
+                    <div class="form-control card">
+                        <label for="seachYear">Chọn năm:</label>
+                        <input type="number" name="seachYear" id="seachYear" min="1900" max="2100" step="1" value=<%= new Date().getUTCFullYear() %>>
+                    </div>
+                    <input type="hidden" value="<%= '_id' %>" name="_id">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn card" type="submit">Seach lương tháng</button>
+                </form>
+            </div> -->
+            <!-- Tính toán -->
+            <% 'const lD = salarys.filter((s) => ((s.date.slice(0, 4) == s.nowYear) && (s.date.slice(5, 7) == s.nowMounth)) );' %> <!-- Lọc theo tháng -->
+            <% 'let sumOT = 0; const sOT = lD.filter((l) => l.delta > 0); sOT.forEach((o) => sumOT += parseInt(o.delta, 10));' %> <!-- Tính over time -->
+            <% 'let sumLT = 0; const sLT = lD.filter((l) => l.delta < 0); sLT.forEach((t) => sumLT += parseInt(t.delta, 10));' %> <!-- Tính làm thiếu -->
+            <% 'const luong = Staff.salaryScale * 3000000 + (sumOT - Math.abs(sumLT)) * 200000' %> <!-- Tính lương -->
+            <!-- <p>Hệ số lương * 3000000 + (số giờ làm thêm - số giờ làm thiếu) * 200000 = Lương</p>
+            <p><%= 'Staff.salaryScale' %> * 3000000 + (<%= 'sumOT' %> - <%= 'Math.abs(sumLT)' %>) * 200000 = <%= 'luong' %></p> -->
+        <!-- </div> -->
+        <h3>Chi tiết làm việc</h3>
+        <div class="card grid">
+            <h4>Sắp xếp thông tin theo:</h4>
+            <form class="grid" action="/post-sort" method="post">
+                <select class="form-control" name="sortField">
+                    <option value="date" selected>Ngày</option>
+                    <option value="totalWorkTime">Thời gian làm việc</option>
+                </select>
+                <select class="form-control" name="sortValue">
+                    <option value="1">Tăng dần</option>
+                    <option value="-1" selected>Giảm dần</option>
+                </select>
+                <input type="hidden" name="staff_id" value="<%= workDatas[0].staff_id %>">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button class="btn" type="submit">Seach lương tháng</button>
+                <button class="btn card" type="submit">Sắp xếp</button>
             </form>
-            <p>Lương = salaryScale * 3000000 + (overTime - số giờ làm thiếu) * 200000</p>
-            <% if (seachData) { %>
-                <p><%= seachData.Luong %> = <%= seachData.HSL %> * 3000000 + (<%= seachData.OT %> - <%= seachData.LT %>) * 200000</p>
-            <% } %>
         </div>
-        <% if (!seachData) { %>
-            <div class="card">
-                <h4>Chi tiết làm việc</h4>
-                <% work.forEach(function (w) {
-                    const m = w.working.map(function (p) {
-                        return p.date;
-                    });
-                    if(m.length !== 0) {
-                        const M = Array.from(new Set(m)); // Loại phần tử trùng
-                        M.forEach(function (m) {
-                            const D = w.working.filter(function (p) {
-                                return p.date === m;
-                            })
-                            D.forEach(function (d) {
-                                %><div class="card">
-                                    <p>Ngày: <%= d.date %></p>
-                                    <p>Thời gian bắt đầu: <%= d.begin %></p>
-                                    <p>Thời gian kết thúc: <%= d.end %></p>
-                                    <p>Nơi làm việc: <%= d.at %></p>
-                                    <p>Thời gian làm thêm theo ngày: <%= d.workTime.slice(0, 5) %></p>
-                                </div><%
-                            })
-                            const A = w.annualLeave.anLeReg.filter(function (x) {
-                                return x.date === m;
-                            });
-                            let sum = 0;
-                            A.forEach(function (y) {
-                                sum += y.reg;
-                            });
-                            %><p>Thời gian đăng ký nghĩ phép: <%= sum %></p><%
-                        })
-                    }
-                }); %>
-            </div>
+        <% if (workDatas.length > 0) { %>
+            <% for (let workData of workDatas) { %>
+                <div class="card">
+                    <p>Ngày: <%= workData.date %></p>
+                    <% if (workData.workTimeList.length > 0) { %>
+                        <p>- Thời gian làm việc:</p>
+                        <% for ( let wT of (workData.workTimeList) ) { %>
+                        <p>+ Thời gian bắt đầu: <%= wT.begin %>, thời gian kết thúc: <%= wT.end %>, nơi làm việc: <%= wT.at %></p>
+                        <% } %>
+                    <% } else { %>
+                        <p>- Chưa làm việc</p>
+                    <% } %>
+                    <% if (workData.regAnnualLeave.length > 0) { %>
+                        <p>- Thời gian đăng ký nghĩ phép:</p>
+                        <% for ( let aL of workData.regAnnualLeave ) { %>
+                            <p>+ Nghĩ: <%= aL.register %> giờ, lý do: <%= aL.reason %></p>
+                        <% } %>
+                    <% } else { %>
+                        <p>- Không đăng ký nghĩ</p>
+                    <% } %>
+                    <p>- Thời gian làm việc theo ngày: <%= workData.totalWorkTime %> giờ</p>
+                    <p>- Thời gian <%= workData.deltaWT > 0 ? 'làm thêm' : 'làm thiếu' %> theo ngày: <%= workData.deltaWT > 0 ? workData.deltaWT : (-workData.deltaWT) %> giờ</p>
+                </div>
+            <% } %>
+        <% } else { %>
+            <p>Chưa có thông tin</p>
         <% } %>
     </main>
 

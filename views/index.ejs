@@ -5,7 +5,7 @@
 
 <body>
     <%- include('includes/navigation.ejs') %>
-    <h2 class="centered"><%= user.isManager ? "Xác nhận thông tin" : "Thông tin cá nhân" %></h2>
+    <h2 class="centered"><%= user.isManager ? "Xác nhận thông tin nhân viên" : "Thông tin cá nhân" %></h2>
     <% if (staffs.length > 0) { %>
         <div class="grid">
             <% for (let staff of staffs) { %>
@@ -20,12 +20,7 @@
                         <a href="/check/<%= staff._id %>" class="btn">Điểm danh</a>
                         <a href="/annualLeave/<%= staff._id %>" class="btn">Đăng ký nghĩ phép</a>
                         <a href="/covid/<%= staff._id %>" class="btn">Thông tin covid-19</a>
-                        <!-- <% if (!user.isManager) { %>
-                            <form action="/salary" method="get">
-                                <input type="hidden" value="<%= staff._id %>" name="_id">
-                                <button class="btn" type="submit">Thông tin lương</button>
-                            </form>
-                        <% } %> -->
+                        <a href="/salary/<%= staff._id %>" class="btn">Thông tin lương</a>
                     </div>
                 </article>
             <% } %>

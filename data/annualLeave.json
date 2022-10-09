@@ -1,28 +1,28 @@
 [
     {
         "staff_id": { "$oid": "6278d8752aa467f9325d7674" },
-        "annualLeave": 10,
+        "_id": { "$oid": "629ad081d7ba5f62fb3fabe2" },
+        "annualLeave": 9.5,
         "regInformation": [ {
-            "_id": { "$oid": "629ad081d7ba5f62fb3fabe2" },
-            "confirm": false,
+            "confirm": true,
             "regDate": "2022-01-01",
             "leaveDate": "2022-02-01",
-            "register": 0.25,
-            "reason": "aaaaa"
-        } ],
-        "__v": 0
+            "register": 0.5,
+            "reason": "aaaaa",
+            "_id": { "$oid": "629ad081d7ba5f62fb3fabe2" }
+        } ]
     },
     {
         "staff_id": { "$oid": "6278d8752aa467f9325d7675" },
-        "annualLeave": 10,
+        "_id": { "$oid": "629ad0c9d7ba5f62fb3fabe7" },
+        "annualLeave": 9.5,
         "regInformation": [ {
-            "_id": { "$oid": "629ad0c9d7ba5f62fb3fabe7" },
-            "confirm": false,
+            "confirm": true,
             "regDate": "2022-01-02",
             "leaveDate": "2022-02-02",
-            "register": 0.25,
-            "reason": "bbbbb"
-        } ],
-        "__v": 0
+            "register": 0.5,
+            "reason": "bbbbb",
+            "_id": { "$oid": "629ad0c9d7ba5f62fb3fabe7" }
+        } ]
     }
 ]

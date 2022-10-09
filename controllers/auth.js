@@ -31,17 +31,17 @@ exports.postLogin = (req, res, next) => {
     const errors = validationResult(req);
     
     if (!errors.isEmpty()) {
-      console.log(errors.array());
-      return res.status(422).render('auth/login', {
-        path: '/login',
-        pageTitle: 'Login',
-        errorMessage: errors.array()[0].msg,
-        oldInput: {
-            'staffId': staffId,
-            'password': password
-        },
-        validationErrors: errors.array()
-      });
+        console.log(errors.array());
+        return res.status(422).render('auth/login', {
+            path: '/login',
+            pageTitle: 'Login',
+            errorMessage: errors.array()[0].msg,
+            oldInput: {
+                'staffId': staffId,
+                'password': password
+            },
+            validationErrors: errors.array()
+        });
     }  
 
     User
@@ -63,7 +63,7 @@ exports.postLogin = (req, res, next) => {
                 .compare(password, user.password) // So sánh mật khẩu đã hash
                 .then(doMatch => {
                     if (doMatch) {
-                        const session = req.session; // Vào database tạo 1 session
+                        const session = req.session; // Vào database gọi session
                         // Add các giá trị vào session
                         session.isLoggedIn = true;
                         session.user = user;
@@ -102,7 +102,7 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postLogout = (req, res, next) => {
-    const session = req.session; // Vào database tạo 1 session
+    const session = req.session; // Vào database gọi session
     return session.destroy((err) => {
         console.log(session.user.staffId, 'LOG OUT! ERROR:', err);
         return res.redirect('/');

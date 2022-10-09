@@ -27,7 +27,7 @@ exports.getIndex = (req, res, next) => {
                     }
                 );
             })
-            .then(result => {
+            .then(() => {
                 console.log('STAFF!');
             })
             .catch(err => {
@@ -37,7 +37,7 @@ exports.getIndex = (req, res, next) => {
     };
 };
 
-exports.getStaffWithId = (req, res, next) => {
+exports.getStaffWithId = async (req, res, next) => {
     const _id = req.params._id;
     const user = req.session.user;
 
@@ -74,7 +74,7 @@ exports.postEditStaff = (req, res, next) => {
             staff.imageUrl = updatedImageUrl;
             return staff.save()
         })
-        .then(result => {
+        .then(() => {
             console.log('UPDATED STAFF!');
             res.redirect('/');
         })

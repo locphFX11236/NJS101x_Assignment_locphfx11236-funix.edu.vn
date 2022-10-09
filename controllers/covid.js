@@ -1,5 +1,5 @@
 const Covid = require('../models/covid');
-const handle = require('../models/handle');
+const handle = require('../util/handle');
 
 exports.getIndex = (req, res, next) => {
     const staff_id = req.params.staff_id;

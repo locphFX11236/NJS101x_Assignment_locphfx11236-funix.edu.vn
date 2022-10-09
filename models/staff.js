@@ -17,7 +17,7 @@ const staffSchema = new Schema({
         required: true
     },
     doB: {
-        type: Date,
+        type: String,
         required: true
     },
     salaryScale: {
@@ -25,7 +25,7 @@ const staffSchema = new Schema({
         required: true
     },
     startDate: {
-        type: Date,
+        type: String,
         required: true
     },
     department: {
@@ -41,12 +41,5 @@ const staffSchema = new Schema({
         required: true
     }
 });
-
-// workSchema.methods.addAnnualLeave = function(newReg) {
-//     this.annualLeave.anLeReg.push(newReg);
-//     this.annualLeave.total -= newReg.reg;
-//     this.save();
-//     return this;
-// }
 
 module.exports = mongoose.model('Staff', staffSchema);

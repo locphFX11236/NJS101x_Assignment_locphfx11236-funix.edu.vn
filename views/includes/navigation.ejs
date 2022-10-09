@@ -15,9 +15,9 @@
             <li class="main-header__item">
                 <a class="<%= path === '/annualLeave/:staff_id' ? 'active' : '' %>" <%= path === '/annualLeave/:staff_id' ? '' : 'hidden' %> >Nghĩ phép</a>
             </li>
-            <!-- <li class="main-header__item">
-                <a class="<%= path === '/salary' ? 'active' : '' %>" href="/salary">Chi tiết lương</a>
-            </li> -->
+            <li class="main-header__item">
+                <a class="<%= path === '/salary/:staff_id' ? 'active' : '' %>" <%= path === '/salary/:staff_id' ? '' : 'hidden' %> >Chi tiết lương</a>
+            </li>
             <% if (isAuthenticated) { %>
                 <li class="main-header__item">
                     <a class="<%= path === '/covid/:staff_id' ? 'active' : '' %>" <%= path === '/covid/:staff_id' ? '' : 'hidden' %> >Thông tin covid</a>

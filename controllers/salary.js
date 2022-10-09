@@ -1,31 +1,51 @@
-// const Work = require('../models/work');
-// const handle = require('../models/handle');
+const WorkData = require('../models/workData');
 
-// exports.getIndex = (req, res, next) => {
-//     const _id = req.params._id;
-//     const name = req.staffName;
-//     let seachData;
+exports.getIndex = async (req, res, next) => {
+    const staff_id = req.params.staff_id;
+    const reqStaff = req.staff;
+    const search = req.session.searchValue;
+    let sortObject;
 
-//     Work
-//         .find({ 'id': _id })
-//         .then(work => {
-//             return res.render(
-//                 'MH-3', // Đến file index theo app.set là 'ejs', 'views'
-//                 {
-//                     _id: _id,
-//                     seachData: seachData,
-//                     work: work,
-//                     name: name,
-//                     pageTitle: 'Điểm danh', // Page Title
-//                     path: '/salary' // Để truy cập view trên trình duyệt
-//                 }
-//             );
-//         })
-//         .catch(err => {
-//             console.error(__dirname, err);
-//         })
-//     ;
-// }
+    console.log(search.length);
+    if (search.length === 0) { sortObject = { 'date': -1 }; }
+    else {
+        sortObject = search[0];
+    };
+
+    return WorkData
+        .find({ 'staff_id': staff_id })
+        .sort(sortObject)
+        .then(workDatas => {
+            return res.render(
+                'MH-3', // Đến file index theo app.set là 'ejs', 'views'
+                {
+                    workDatas: workDatas,
+                    Staff: reqStaff,
+                    pageTitle: 'Thông tin làm', // Page Title
+                    path: '/salary/:staff_id' // Thuộc tính path truyền vào
+                }
+            );
+        })
+    ;
+}
+
+exports.sortList = async (req, res, next) => {
+    const staff_id = req.body.staff_id;
+    const sortField = req.body.sortField;
+    const sortValue = req.body.sortValue;
+    let sortObject;
+
+    console.log(req.body)
+    if (sortField === 'date') {
+        sortObject = { 'date': sortValue };
+    } else {
+        sortObject = { 'totalWorkTime': sortValue };
+    };
+    // req.searchValue.push(sortObject);
+    console.log(req.searchValue)
+
+    return res.redirect('/salary/' + staff_id);
+}
 
 // exports.seachMonth = (req, res, next) => {
 //     const _id = req.body._id;

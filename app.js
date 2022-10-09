@@ -15,17 +15,21 @@ const rootDir = require('./util/path');
 const authRoutes = require('./routes/auth');
 const staffRoutes = require('./routes/staff');
 const checkRoutes = require('./routes/check');
-// const salaryRoutes = require('./routes/salary');
+const salaryRoutes = require('./routes/salary');
 const covidRoutes = require('./routes/covid');
 const errorController = require('./controllers/error');
+const Staff = require('./models/staff');
 
+// Khai báo
 const MONGODB_URI = 'mongodb://localhost:27017/appStaff'; // Uri liên kết mongodb
 const app = express(); // Sử dụng framework express.js
+const csrfProtection = csrf(); // Tạo csrfProtection
+
+// Tạo 1 collection trong database
 const store = new MongoDBStore({
-    uri: MONGODB_URI, // Kết nối database
+    uri: MONGODB_URI, // Kết nối database (uri có tính duy nhất so với url, path (đường dẫn) là thuật ngữ chung của uri và url)
     collection: 'sessions' // Tạo collection 'session' trong database
 }); // Tạo kho lưu trữ session trên database
-const csrfProtection = csrf(); // Tạo csrfProtection
 
 // Thiết đặt sử dụng template
 app.set(
@@ -58,11 +62,30 @@ app.use((req, res, next) => {
     next();
 }); // res.locals là biến cục bộ thêm vào tất cả các view
 app.use(flash()); // Sử dụng middleware flash trên đối tượng req dùng cho cả ứng dụng
+app.use((req, res, next) => { // Nếu là không phải là manager thì thêm 1 property staff vào req
+    if (!req.session.user) { // Bỏ qua nếu không đăng nhập
+        return next();
+    };
+    if (!req.session.user.isManager) { // Bỏ qua nếu không phải là nhân viên
+        return Staff
+            .findOne({ 'user_id': req.session.user._id })
+            .then(staff => {
+                req.staff = staff; // Thêm prop req.staff để truy xuất tên
+                // req.searchValue = [];
+                return next();
+            })
+            .catch(err => {
+                throw new Error(err);
+            })
+        ;
+    } else req.staff = {};
+    return next();
+});
 
 // Các Routes
 app.use(staffRoutes);
 app.use(checkRoutes);
-// app.use(salaryRoutes);
+app.use(salaryRoutes);
 app.use(covidRoutes);
 app.use(authRoutes);
 app.use(errorController.get404); // Xử lý lổi 404
