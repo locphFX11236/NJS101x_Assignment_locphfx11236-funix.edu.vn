@@ -1,0 +1,31 @@
+<section class="pagination">
+    <% if(currentPage !== 1 && prevPage !== 1) { %>
+        <a href="?page=1&item=<%= oldState.item %>&month=<%= oldState.month %>">
+            |< 1
+        </a>
+    <% } %>
+    <% if (hasPrevPage) { %>
+        <a href="?page=<%= prevPage %>&item=<%= oldState.item %>&month=<%= oldState.month %>">
+            < <%= prevPage %>
+        </a>
+    <% } %>
+    <a href="?page=<%= currentPage %>&item=<%= oldState.item %>&month=<%= oldState.month %>" class="active">
+        <%= currentPage %>
+    </a>
+    <% if (hasNextPage) { %>
+        <a href="?page=<%= nextPage %>&item=<%= oldState.item %>&month=<%= oldState.month %>">
+            <%= nextPage %> >
+        </a>
+    <% } %>
+    <% if (lastPage !== currentPage && nextPage !== lastPage) { %>
+        <a href="?page=<%= lastPage %>&item=<%= oldState.item %>&month=<%= oldState.month %>">
+            <%= lastPage %> >|
+        </a>
+    <% } %>
+    <form action="/post-item-per-page?month=<%= oldState.month %>" method="post">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <input type="hidden" name="staff_id" value="<%= Staff._id %>" />
+        <input type="text" name="item" value="<%= oldState.item %>" />
+        <button type="submit">Items/page</button>
+    </form>
+</section>

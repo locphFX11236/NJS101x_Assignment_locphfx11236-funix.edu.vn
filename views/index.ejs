@@ -4,9 +4,10 @@
 </head>
 
 <body>
-    <%- include('includes/navigation.ejs') %>
-    <h2 class="centered"><%= user.isManager ? "Xác nhận thông tin nhân viên" : "Thông tin cá nhân" %></h2>
+    <%- include('includes/navigation.ejs', { user: user, staffs: staffs } ) %>
+    <h2 class="centered"><%= user.isManager ? "Xác nhận thông tin nhân viên" : "" %></h2>
     <% if (staffs.length > 0) { %>
+
         <div class="grid">
             <% for (let staff of staffs) { %>
                 <article class="card staff-item">
@@ -25,6 +26,7 @@
                 </article>
             <% } %>
         </div>
+
     <% } else { %>
         <h1>No Staffs Found!</h1>
     <% } %>

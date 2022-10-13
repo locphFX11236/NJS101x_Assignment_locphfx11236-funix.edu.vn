@@ -8,6 +8,10 @@ const staffSchema = new Schema({
         ref: 'User',
         required: true
     },
+    staffId: {
+        type: String,
+        required: true
+    },
     imageUrl: {
         type: String,
         required: true

@@ -14,7 +14,7 @@ router
 ;
 
 // Tương tự với các router còn lại
-// router.post('/post-search-salary', isAuth, salaryController.searchSalary);
-router.post('/post-sort', isAuth, salaryController.sortList);
+router.post('/post-search-month', isAuth, salaryController.searchSalary);
+router.post('/post-item-per-page', isAuth, salaryController.itemPage);
 
 module.exports = router;

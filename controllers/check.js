@@ -1,6 +1,5 @@
 const WorkTime = require('../models/workTime');
 const AnnualLeave = require('../models/annualLeave');
-const WorkData = require('../models/workData');
 const handle = require('../util/handle');
 const Staff = require('../models/staff');
 
@@ -163,7 +162,7 @@ exports.postEnd = async (req, res, next) => {
             };
 
             workTimes[i].save();
-            console.log(workTimes[i])
+            // console.log(workTimes[i])
             return workTimes;
         })
         .then(() => {
@@ -188,46 +187,6 @@ exports.confirmWork = async (req, res, next) => {
             workTime.confirm = true;
             workTime.save();
             return workTime;
-        })
-        .then(async workTime => {
-            const newWTD = {
-                workTime: workTime.workTime,
-                begin: workTime.begin,
-                end: workTime.end,
-                at: workTime.at
-            };
-            const deltaWT = workTime.workTime - 8;
-            
-            return WorkData
-                .findOne({ $and: [
-                    { 'staff_id': staff_id },
-                    { 'date': dateWork }
-                ] })
-                .then(workData => {
-                    if (!workData) {
-                        const newWorkData = new WorkData({
-                            'staff_id': staff_id,
-                            'date': dateWork,
-                            'deltaWT': 0,
-                            'annualLeave': 0,
-                            'totalWorkTime': 0,
-                            'workTimeList': [],
-                            'regAnnualLeave': []
-                        });
-                        newWorkData.save();
-                        console.log('CREATING WORKDATA!');
-                        return newWorkData;
-                    };
-                    return workData;
-                })
-                .then(workData => {
-                    workData.deltaWT = deltaWT;
-                    workData.workTime.push(newWTD);
-                    workData.save();
-                    return console.log('ADDED WORKDATA!');
-                })
-                .catch(err => console.log('NOT ADDED WORKDATA!! ERROR: ', err))
-            ;
         })
         .then(() => {
             console.log('CONFIRMED TO WORK TIME!');
@@ -259,8 +218,7 @@ exports.getAL = async (req, res, next) => {
             if (!annu) {
                 const newAnnu = new AnnualLeave({
                     staff_id: staff_id,
-                    annualLeave: 9.5,
-                    regDate: "2022-01-02",
+                    annualLeave: 10,
                     regInformation: []
                 });
                 return newAnnu;
@@ -322,13 +280,14 @@ exports.confirmAnnu = async (req, res, next) => {
             return annu;
         })
         .then(async annu => { // Đẩy annualLeave lên Staff
-            return await Staff
+            return Staff
                 .findById(staff_id)
                 .then((staff) => {
                     staff.annualLeave = annu.annualLeave;
                     staff.save();
-                    console.log('UPDATE TO STAFF DATABASE!');
                 })
+                .then(() => console.log('UPDATE TO STAFF DATABASE!'))
+                .catch(err => console.log('NOT UPDATE TO STAFF! ERROR: ', err));
             ;
         })
         .then(() => { // Thông báo

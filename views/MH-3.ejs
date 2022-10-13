@@ -6,76 +6,88 @@
     <%- include('includes/navigation.ejs') %>
     <main class="centered">
         <h2>Thông tin làm việc</h2>
-        <h3>Họ và tên: <%= Staff.name %></h3>
-        <!-- <div class="card">
-            <h4>Tính lương tháng:</h4>
-            <div style="display:inline-block">
-                <form class="grid" action="/post-search-salary" method="post">
-                    <div class="form-control card">
-                        <label for="seachMonth">Chọn tháng:</label>
-                        <input type="number" name="seachMonth" id="seachMonth" min="1" max="12" step="1" value=<%= 1 + new Date().getUTCMonth() %>>
-                    </div>
-                    <div class="form-control card">
-                        <label for="seachYear">Chọn năm:</label>
-                        <input type="number" name="seachYear" id="seachYear" min="1900" max="2100" step="1" value=<%= new Date().getUTCFullYear() %>>
-                    </div>
-                    <input type="hidden" value="<%= '_id' %>" name="_id">
+        <div class="grid">
+            <div class="card">
+                <h3>Họ và tên: <%= Staff.name %></h3>
+                <hr/>
+                <p>Id nhân viên: <%= Staff.staffId %></p>
+                <p>Quản lí: <%= Staff.managerId %></p>
+            </div>
+            <div class="card">
+                <form class="card" action="/post-search-month?page=<%= oldState.showPage %>&item=<%= oldState.item %>" method="post">
+                    <label><strong>Lương tháng:</strong></label>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button class="btn card" type="submit">Seach lương tháng</button>
+                    <input type="hidden" name="staff_id" value="<%= Staff._id %>">
+                    <input type="text" name="monthSearch" value="<%= oldState.month %>" />
+                    <button type="submit">Search</button>
                 </form>
-            </div> -->
-            <!-- Tính toán -->
-            <% 'const lD = salarys.filter((s) => ((s.date.slice(0, 4) == s.nowYear) && (s.date.slice(5, 7) == s.nowMounth)) );' %> <!-- Lọc theo tháng -->
-            <% 'let sumOT = 0; const sOT = lD.filter((l) => l.delta > 0); sOT.forEach((o) => sumOT += parseInt(o.delta, 10));' %> <!-- Tính over time -->
-            <% 'let sumLT = 0; const sLT = lD.filter((l) => l.delta < 0); sLT.forEach((t) => sumLT += parseInt(t.delta, 10));' %> <!-- Tính làm thiếu -->
-            <% 'const luong = Staff.salaryScale * 3000000 + (sumOT - Math.abs(sumLT)) * 200000' %> <!-- Tính lương -->
-            <!-- <p>Hệ số lương * 3000000 + (số giờ làm thêm - số giờ làm thiếu) * 200000 = Lương</p>
-            <p><%= 'Staff.salaryScale' %> * 3000000 + (<%= 'sumOT' %> - <%= 'Math.abs(sumLT)' %>) * 200000 = <%= 'luong' %></p> -->
-        <!-- </div> -->
-        <h3>Chi tiết làm việc</h3>
-        <div class="card grid">
-            <h4>Sắp xếp thông tin theo:</h4>
-            <form class="grid" action="/post-sort" method="post">
-                <select class="form-control" name="sortField">
-                    <option value="date" selected>Ngày</option>
-                    <option value="totalWorkTime">Thời gian làm việc</option>
-                </select>
-                <select class="form-control" name="sortValue">
-                    <option value="1">Tăng dần</option>
-                    <option value="-1" selected>Giảm dần</option>
-                </select>
-                <input type="hidden" name="staff_id" value="<%= workDatas[0].staff_id %>">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button class="btn card" type="submit">Sắp xếp</button>
-            </form>
-        </div>
-        <% if (workDatas.length > 0) { %>
-            <% for (let workData of workDatas) { %>
-                <div class="card">
-                    <p>Ngày: <%= workData.date %></p>
-                    <% if (workData.workTimeList.length > 0) { %>
-                        <p>- Thời gian làm việc:</p>
-                        <% for ( let wT of (workData.workTimeList) ) { %>
-                        <p>+ Thời gian bắt đầu: <%= wT.begin %>, thời gian kết thúc: <%= wT.end %>, nơi làm việc: <%= wT.at %></p>
-                        <% } %>
-                    <% } else { %>
-                        <p>- Chưa làm việc</p>
-                    <% } %>
-                    <% if (workData.regAnnualLeave.length > 0) { %>
-                        <p>- Thời gian đăng ký nghĩ phép:</p>
-                        <% for ( let aL of workData.regAnnualLeave ) { %>
-                            <p>+ Nghĩ: <%= aL.register %> giờ, lý do: <%= aL.reason %></p>
-                        <% } %>
-                    <% } else { %>
-                        <p>- Không đăng ký nghĩ</p>
-                    <% } %>
-                    <p>- Thời gian làm việc theo ngày: <%= workData.totalWorkTime %> giờ</p>
-                    <p>- Thời gian <%= workData.deltaWT > 0 ? 'làm thêm' : 'làm thiếu' %> theo ngày: <%= workData.deltaWT > 0 ? workData.deltaWT : (-workData.deltaWT) %> giờ</p>
+                <h5>Lương = salaryScale * 3.000.000 + (Over Time - số giờ làm thiếu) * 200.000)</h5>
+                <hr/>
+                <% if (monthData.loseTime < 160) { %>
+
+                <span>Chi tiết:</span>
+                <div class="grid">
+                    <span>Lương: <%= Math.round(Staff.salaryScale*3000000 + (monthData.oT - monthData.loseTime)*200000) %> (VND)</span>
+                    <span>Salary scale: <%= Staff.salaryScale %></span>
                 </div>
+                <div class="grid">
+                    <span>Over Time: <%= monthData.oT %> (giờ)</span>
+                    <span>Thiếu: <%= monthData.loseTime %> (giờ)</span>
+                </div>
+
+                <% } else { %>
+
+                <p><strong>Chưa có thông tin làm việc.</strong></p>
+
+                <% } %>
+            </div>
+        </div>
+        <h4>Chi tiết thông tin giờ làm</h4>
+        <div class="card">
+        <% if (sessionData.length > 0) { %>
+
+            <div class="grid">
+            <% for (let S of sessionData) { %>
+                <% S.map(s => { %>
+
+                <div class="card">
+                    <h4>Ngày: <%= s.date %></h4>
+                    <span>- Thời gian bắt đầu làm việc: <%= s.begin %></span><br/>
+                    <span>- Thời gian kết thúc: <%= s.end %></span><br/>
+                    <span>- Nơi làm việc: <%= s.at %></span><br/>
+                    <span>- Thời gian làm việc của phiên: <%= s.workTime %></span><br/>
+                    <% const D = dateData.find(d => d.date === s.date); %>
+                    <% if (s.countIndex === D.lastSessionIndex) {%>
+
+                    <hr/>
+                    <span>- Thời gian làm thêm trong ngày: <%= D.oT %></span><br/>
+                    <span>- Thời gian đăng ký nghĩ<br/>trong ngày: <%= D.annu %></span><br/>
+                    <span>- Thời gian làm theo ngày<br/>(bao gồm cả nghĩ phép): <%= D.hourToSalary %></span><br/>
+
+                    <% } %>
+                </div>
+
+                <% }) %>
+
             <% } %>
+            </div>
+            <%- include(
+                './includes/pagination.ejs',
+                {
+                    oldState: oldState,
+                    hasPrevPage: hasPrevPage,
+                    prevPage: prevPage,
+                    lastPage: lastPage,
+                    currentPage: currentPage,
+                    nextPage: nextPage,
+                    hasNextPage: hasNextPage,
+                }
+            ) %>
+
         <% } else { %>
-            <p>Chưa có thông tin</p>
+            <p>Chưa có thông tin giờ làm.</p>
         <% } %>
+        </div>
     </main>
 
 <%- include('includes/end.ejs') %>

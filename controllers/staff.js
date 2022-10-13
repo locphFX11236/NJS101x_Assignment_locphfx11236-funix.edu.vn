@@ -22,7 +22,7 @@ exports.getIndex = (req, res, next) => {
                     {
                         user: user,
                         staffs: staffs,
-                        pageTitle: 'Nhân viên', // Page Title
+                        pageTitle: user.isManager ? 'Nhân viên' : 'Home', // Page Title
                         path: '/' // Để truy cập view trên trình duyệt
                     }
                 );

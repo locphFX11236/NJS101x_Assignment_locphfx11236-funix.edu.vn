@@ -2,6 +2,7 @@
     {
         "_id": { "$oid": "6278d8752aa467f9325d7674" },
         "user_id": { "$oid": "6273a8267a67c7fad4b43c19" },
+        "staffId": "NV1",
         "name": "AAAA",
         "doB": "2001-01-01",
         "salaryScale": 1,
@@ -14,6 +15,7 @@
     {
         "_id": { "$oid": "6278d8752aa467f9325d7675" },
         "user_id": { "$oid": "6273a8267a67c7fad4b43c1a" },
+        "staffId": "NV2",
         "name": "BBBB",
         "doB": "2002-02-02",
         "salaryScale": 1,

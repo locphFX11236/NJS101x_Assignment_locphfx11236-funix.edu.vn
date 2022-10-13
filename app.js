@@ -71,7 +71,9 @@ app.use((req, res, next) => { // Nếu là không phải là manager thì thêm 
             .findOne({ 'user_id': req.session.user._id })
             .then(staff => {
                 req.staff = staff; // Thêm prop req.staff để truy xuất tên
-                // req.searchValue = [];
+                req.session.searchValue = {
+                    monthSalary: ''
+                };
                 return next();
             })
             .catch(err => {

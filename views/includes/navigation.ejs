@@ -4,9 +4,6 @@
     <nav class="main-header__nav">  
         <ul class="main-header__item-list">
             <li class="main-header__item">
-                <a class="<%= path === '/' ? 'active' : '' %>" href="/">Nhân viên</a>
-            </li>
-            <li class="main-header__item">
                 <a class="<%= path === '/staff/:_id' ? 'active' : '' %>" <%= path === '/staff/:_id' ? '' : 'hidden' %> >Thông tin nhân viên</a>
             </li>
             <li class="main-header__item">
@@ -19,6 +16,9 @@
                 <a class="<%= path === '/salary/:staff_id' ? 'active' : '' %>" <%= path === '/salary/:staff_id' ? '' : 'hidden' %> >Chi tiết lương</a>
             </li>
             <% if (isAuthenticated) { %>
+                <li class="main-header__item">
+                    <a class="<%= path === '/' ? 'active' : '' %>" href="/"><%= 'user.isManager ? 'Nhân viên' : 'Home'' %></a>
+                </li>
                 <li class="main-header__item">
                     <a class="<%= path === '/covid/:staff_id' ? 'active' : '' %>" <%= path === '/covid/:staff_id' ? '' : 'hidden' %> >Thông tin covid</a>
                 </li>

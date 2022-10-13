@@ -12,37 +12,35 @@ const workDataSchema = new Schema({
         type: String,
         required: true
     },
-    deltaWT: {
-        type: Number,
+    begin: {
+        type: String,
         required: true
     },
-    annualLeave: {
-        type: Number,
+    end: {
+        type: String,
         required: true
     },
-    totalWorkTime: {
-        type: Number,
+    at: {
+        type: String,
         required: true
     },
-    workTimeList: [ {
-        workTime: {
+    workTime: {
+        type: String,
+        required: true
+    },
+    totalWT: {
+        type: String,
+        required: true
+    },
+    annuArr: [{
+        confirm: {
+            type: Boolean,
+            required: true
+        },
+        leaveDate: {
             type: String,
             required: true
         },
-        begin: {
-            type: String,
-            required: true
-        },
-        end: {
-            type: String,
-            required: true
-        },
-        at: {
-            type: String,
-            required: true
-        }
-    } ],
-    regAnnualLeave: [ {
         register: {
             type: Number,
             required: true
@@ -51,7 +49,11 @@ const workDataSchema = new Schema({
             type: String,
             required: true
         }
-    } ]
+    }],
+    countIndex: {
+        type: Number,
+        required: true
+    },
 }, {
     timestamps: true,
 });

@@ -105,6 +105,6 @@ exports.postLogout = (req, res, next) => {
     const session = req.session; // Vào database gọi session
     return session.destroy((err) => {
         console.log(session.user.staffId, 'LOG OUT! ERROR:', err);
-        return res.redirect('/');
+        return res.redirect('/login');
     }); // Xóa session trong database
 }; 
