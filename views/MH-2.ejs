@@ -7,7 +7,7 @@
     <main class="card centered">
         <h1>Thông tin nhân viên</h1>
         <div class="card__content grid">
-            <form class="product-form" action="/edit-staff" method="POST">
+            <form class="product-form" action="/edit-staff" method="POST" enctype="multipart/form-data">
                 <div class="form-control">
                     <label for="name">Họ và tên</label>
                     <input type="text" name="name" id="name" value="<%= staff.name %>" readonly>
@@ -36,21 +36,24 @@
                     <label for="annualLeave">Số ngày nghỉ còn lại</label>
                     <input type="text" name="annualLeave" id="annualLeave" value="<%= staff.annualLeave %>" readonly>
                 </div>
+                <% if (!user.isManager) { %>
+
                 <hr>
                 <div class="form-control">
                     <label for="imageUrl">Link hình ảnh</label>
+                    <!-- <input type="text" name="imageUrl" id="imageUrl" value="<%= staff.imageUrl %>" <%= user.isManager ? 'readonly' : null %> > -->
                     <p>Upload file</p>
-                    <input type="text" name="imageUrl" id="imageUrl" value="<%= staff.imageUrl %>" <%= user.isManager ? 'readonly' : null %> >
+                    <input type="file" name="image" id="image" />
                 </div>
-                <% if (!user.isManager) { %>
-                    <input type="hidden" value="<%= staff._id %>" name="_id">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button class="btn" type="submit">Thay đổi ảnh cá nhân</button>
+                <input type="hidden" value="<%= staff._id %>" name="_id">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn" type="submit">Thay đổi ảnh cá nhân</button>
+
                 <% } %>
             </form>
         </div>
         <div class="card__image">
-            <img src="<%= staff.imageUrl %>" alt="<%= staff.name %>" />
+            <img src="/<%= staff.imageUrl %>" alt="<%= staff.name %>" />
         </div>
     </main>
 

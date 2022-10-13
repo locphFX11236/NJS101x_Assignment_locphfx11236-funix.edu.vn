@@ -9,6 +9,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer');
 
 // Liên kết các file trong app
 const rootDir = require('./util/path');
@@ -31,6 +32,21 @@ const store = new MongoDBStore({
     collection: 'sessions' // Tạo collection 'session' trong database
 }); // Tạo kho lưu trữ session trên database
 
+// Chức năng upload
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => { cb(null, 'images') },
+    filename: (req, file, cb) => { cb(null, Date.now() + '-' + file.originalname) }
+}); // Tạo store với các phương thức xử lý file
+
+const fileFilter = (req, file, cb) => {
+    if (
+        (file.mimetype ==='image/png') ||
+        (file.mimetype ==='image/jpg') ||
+        (file.mimetype ==='image/jpeg')
+    ) cb(null, true);
+    else  cb(null, false);
+}; // Lọc lấy file được cho phép png, jpg, jpeg
+
 // Thiết đặt sử dụng template
 app.set(
     'view engine', // Khai báo sẽ sử dụng Template động cho view
@@ -46,9 +62,11 @@ app.use(bodyParser.urlencoded(
     { extended: false }
 )); // Nhận dữ liệu post từ client, gọi dữ liệu = req.body.<name>
 app.use(express.static(path.join(
-    rootDir, // Đường dẫn đến file chứa file app.js
+    rootDir, // Đường dẫn đến file chứa file app.js, cụ thể là file ASM
     'public' // File chọn để truy cập tĩnh
 ))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js)
+app.use('/images', express.static(path.join(rootDir, 'images'))); // Xữ lý file public tĩnh cho trình duyệt truy cập
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')); // Dùng middleware xử lí file tải lên
 app.use(session({
     secret: 'my secret',
     resave: false,
@@ -71,9 +89,6 @@ app.use((req, res, next) => { // Nếu là không phải là manager thì thêm 
             .findOne({ 'user_id': req.session.user._id })
             .then(staff => {
                 req.staff = staff; // Thêm prop req.staff để truy xuất tên
-                req.session.searchValue = {
-                    monthSalary: ''
-                };
                 return next();
             })
             .catch(err => {

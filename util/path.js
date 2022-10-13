@@ -2,3 +2,5 @@
 const path = require('path');
 
 module.exports = path.dirname(require.main.filename);
+
+// 'https://phunugioi.com/wp-content/uploads/2020/10/hinh-anh-chibi-buon.jpg'
