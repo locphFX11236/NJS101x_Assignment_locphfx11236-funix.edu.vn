@@ -1,0 +1,47 @@
+[
+    {
+        "_id": { "$oid": "629ad081d7ba5f62fb3fabe2" },
+        "staff_id": { "$oid": "6278d8752aa467f9325d7674" },
+        "annualLeave": 8.5,
+        "regInformation": [
+            {
+                "confirm": true,
+                "regDate": "2022-01-01",
+                "leaveDate": "2022-02-01",
+                "register": 0.5,
+                "reason": "aaaaa",
+                "_id": { "$oid": "629ad081d7ba5f62fb3fabe2" }
+            },
+            {
+                "confirm": true,
+                "leaveDate": "2022-10-12",
+                "register": 0.5,
+                "reason": "asdasd",
+                "_id": { "$oid": "6341951d280316733432f4e3" }
+            },
+            {
+                "confirm": true,
+                "leaveDate": "2022-10-09",
+                "register": 0.5,
+                "reason": "asdasdas",
+                "_id": { "$oid": "63442a20cff86f2819ffc0a7" }
+            }
+        ],
+        "__v": 2
+    },
+    {
+        "_id": { "$oid": "629ad0c9d7ba5f62fb3fabe7" },
+        "staff_id": { "$oid": "6278d8752aa467f9325d7675" },
+        "annualLeave": 9.5,
+        "regInformation": [
+            {
+                "confirm": true,
+                "regDate": "2022-01-02",
+                "leaveDate": "2022-02-02",
+                "register": 0.5,
+                "reason": "bbbbb",
+                "_id": { "$oid": "629ad0c9d7ba5f62fb3fabe7" }
+            }
+        ]
+    }
+]

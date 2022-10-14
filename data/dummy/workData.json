@@ -1,0 +1,78 @@
+[
+    {
+        "_id": { "$oid": "6346ee8f23a06a276dbacfd0" },
+        "staff_id": { "$oid": "6278d8752aa467f9325d7674" },
+        "date": "2022-10-05",
+        "begin": "18:20",
+        "end": "18:20",
+        "at": "Công ty",
+        "workTime": "00:00",
+        "totalWT": "00:00",
+        "annuArr": [],
+        "countIndex": 0,
+        "createdAt": { "$date": { "$numberLong": "1665592975625" } },
+        "updatedAt": { "$date": { "$numberLong": "1665592975625" } },
+        "__v": 0
+    },
+    {
+        "_id": { "$oid": "6346ee8f23a06a276dbacfd1" },
+        "staff_id": { "$oid": "6278d8752aa467f9325d7674" },
+        "date": "2022-10-05",
+        "begin": "18:23",
+        "end": "18:25",
+        "at": "Công ty",
+        "workTime": "00:02",
+        "totalWT": "00:02",
+        "annuArr": [],
+        "countIndex": 1,
+        "createdAt": { "$date": { "$numberLong": "1665592975625" } },
+        "updatedAt": { "$date": { "$numberLong": "1665592975625" } },
+        "__v": 0
+    },
+    {
+        "_id": { "$oid": "6346ee8f23a06a276dbacfd2" },
+        "staff_id": { "$oid": "6278d8752aa467f9325d7674" },
+        "date": "2022-10-09",
+        "begin": "21:01",
+        "end": "21:02",
+        "at": "Công ty",
+        "workTime": "00:01",
+        "totalWT": "00:01",
+        "annuArr": [
+            {
+                "confirm": true,
+                "leaveDate": "2022-10-09",
+                "register": 0.5,
+                "reason": "asdasdas",
+                "_id": { "$oid": "63442a20cff86f2819ffc0a7" }
+            }
+        ],
+        "countIndex": 2,
+        "createdAt": { "$date": { "$numberLong": "1665592975628" } },
+        "updatedAt": { "$date": { "$numberLong": "1665592975628" } },
+        "__v": 0
+    },
+    {
+        "_id": { "$oid": "6346ee8f23a06a276dbacfd4" },
+        "staff_id": { "$oid": "6278d8752aa467f9325d7674" },
+        "date": "2022-10-12",
+        "begin": "15:27",
+        "end": "22:51",
+        "at": "Công ty",
+        "workTime": "07:24",
+        "totalWT": "07:24",
+        "annuArr": [
+            {
+                "confirm": true,
+                "leaveDate": "2022-10-12",
+                "register": 0.5,
+                "reason": "asdasd",
+                "_id": { "$oid": "6341951d280316733432f4e3" }
+            }
+        ],
+        "countIndex": 3,
+        "createdAt": { "$date": { "$numberLong": "1665592975628" } },
+        "updatedAt": { "$date": { "$numberLong": "1665592975628" } },
+        "__v": 0
+    }
+]

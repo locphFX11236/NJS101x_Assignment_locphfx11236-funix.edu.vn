@@ -16,5 +16,6 @@ router
 router.post('/post-vaccine', isAuth, CovidController.postVaccine);
 router.post('/post-xn', isAuth, CovidController.postXN);
 router.post('/post-nd', isAuth, CovidController.postND);
+router.post('/exportFile', isAuth, CovidController.exportFile);
 
 module.exports = router;

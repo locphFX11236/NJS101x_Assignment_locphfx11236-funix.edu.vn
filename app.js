@@ -65,7 +65,7 @@ app.use(express.static(path.join(
     rootDir, // Đường dẫn đến file chứa file app.js, cụ thể là file ASM
     'public' // File chọn để truy cập tĩnh
 ))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js)
-app.use('/images', express.static(path.join(rootDir, 'images'))); // Xữ lý file public tĩnh cho trình duyệt truy cập
+app.use('/data/images', express.static(path.join(rootDir, 'data', 'images'))); // Xữ lý file public tĩnh cho trình duyệt truy cập
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')); // Dùng middleware xử lí file tải lên
 app.use(session({
     secret: 'my secret',

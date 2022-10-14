@@ -16,9 +16,9 @@
                         <label for="loaiVaccine">Loại vaccin đã tiêm</label>
                         <input type="text" name="loaiVaccine" id="loaiVaccine" placeholder="Nhập loại vaccine đã tiêm">
                     </div>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input type="hidden" value="<%= covids.staff_id %>" name="staff_id">
                     <input type="hidden" value="<%= covids._id %>" name="_id">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button class="btn" type="submit">Đăng kí thông tin tiêm vaccin</button>
                 </form>
             <% } %>
@@ -28,7 +28,12 @@
                     <% for (let vac of covids.vaccine) { %>
                         <p>Tiêm vaccin vào ngày: <%= vac.dateVac %>, vaccin: <%= vac.typeVac %></p>
                     <% } %>
-                    <p>Xuất file PDF</p>
+                    <form action="/exportFile" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+                        <input type="hidden" value="<%= covids._id %>" name="_id">
+                        <input type="hidden" value="vaccine" name="type">
+                        <button class="btn" type="submit">Xuất file PDF</button>
+                    </form>
                 <% } else { %>
                     <p>Chưa có thông tin!</p>
                 <% } %>
@@ -54,7 +59,12 @@
                     <% for (let daPos of covids.datePositive) { %>
                         <p><%= daPos %></p>
                     <% } %>
-                    <p>Xuất file PDF</p>
+                    <form action="/exportFile" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+                        <input type="hidden" value="<%= covids._id %>" name="_id">
+                        <input type="hidden" value="datePositive" name="type">
+                        <button class="btn" type="submit">Xuất file PDF</button>
+                    </form>
                 <% } else { %>
                     <p>Chưa có thông tin!</p>
                 <% } %>
@@ -83,7 +93,12 @@
                     <% for (let teBo of covids.tempBody) { %>
                         <p>Ngày: <%= teBo.dateTemp %>, nhiệt độ: <%= teBo.temp %></p>
                     <% } %>
-                    <p>Xuất file PDF</p>
+                    <form action="/exportFile" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+                        <input type="hidden" value="<%= covids._id %>" name="_id">
+                        <input type="hidden" value="tempBody" name="type">
+                        <button class="btn" type="submit">Xuất file PDF</button>
+                    </form>
                 <% } else { %>
                     <p>Chưa có thông tin!</p>
                 <% } %>

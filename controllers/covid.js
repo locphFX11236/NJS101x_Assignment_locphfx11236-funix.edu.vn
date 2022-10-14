@@ -1,5 +1,10 @@
+const fs = require('fs');
+const path = require('path');
+const PDFDocument = require('pdfkit');
+
 const Covid = require('../models/covid');
 const handle = require('../util/handle');
+const { PDFFile } = require('../util/exportPDF');
 
 exports.getIndex = (req, res, next) => {
     const staff_id = req.params.staff_id;
@@ -118,3 +123,41 @@ exports.postND = (req, res, next) => {
         .catch(err => console.log('NOT ADD!', err))
     ;
 }
+
+exports.exportFile = (req, res, next) => {
+    const _id = req.body._id;
+    const type = req.body.type;
+
+    Covid
+        .findById(_id)
+        .then(cov => {
+            if(!cov) {
+                return next(new Error('No staff found.'));
+            };
+
+            const fileName = `${type}-${_id}.pdf`;
+            const filePath = path.join('data', 'exports', fileName);
+            const data = cov[type];
+
+            if(data.length === 0) {
+                return next(new Error('No data found.'));
+            };
+
+            const pdfDoc = new PDFDocument();
+            res.setHeader( 'Content-Type', 'application/pdf' );
+            res.setHeader( 'Content-Disposition', `inline; filename="${fileName}"` );
+            pdfDoc.pipe(fs.createWriteStream(filePath)); ///
+            pdfDoc.pipe(res);
+
+            // Nội dung file
+            PDFFile(type, pdfDoc, data);
+
+            pdfDoc.end();
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatus = 500;
+            return next(error);
+        })
+    ;
+};

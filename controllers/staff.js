@@ -1,12 +1,13 @@
 const { validationResult } = require('express-validator');
 
 const Staff = require('../models/staff');
-const fileHelper = require('../util/file');
+const fileHelper = require('../util/deleteFile');
 
 exports.getIndex = (req, res, next) => {
     const user = req.session.user;
     let findStaff;
     
+    if (!user) return res.redirect('/login');
     if (user.isManager) {
         findStaff = { "managerId": user.staffId };
     } else {

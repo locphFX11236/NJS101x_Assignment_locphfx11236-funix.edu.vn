@@ -1,0 +1,117 @@
+[
+    {
+        "_id": { "$oid": "63429edc897d42ceaba2985e" },
+        "staff_id": { "$oid": "6278d8752aa467f9325d7674" },
+        "vaccine": [
+            {
+                "dateVac": "2021-01-01",
+                "typeVac": "AAA",
+                "_id": { "$oid": "63429edc897d42ceaba2985e" }
+            },
+            {
+                "dateVac": "2021-04-01",
+                "typeVac": "AAA",
+                "_id": { "$oid": "6278d8752aa467f9325d7674" }
+            },
+            {
+                "dateVac": "2022-10-11",
+                "typeVac": "dasdas",
+                "_id": { "$oid": "63429fd7de9f4a8f94240fb6" }
+            }
+        ],
+        "datePositive": [
+            "2021-12-01",
+            "2021-12-02",
+            "2021-12-03",
+            "2021-12-04",
+            "2021-12-05",
+            "2022-10-18"
+        ],
+        "tempBody": [
+            {
+                "dateTemp": "2021-12-01",
+                "temp": 38,
+                "_id": { "$oid": "63429ff7de9f4a8f94249fc1" }
+            },
+            {
+                "dateTemp": "2021-12-02",
+                "temp": 38,
+                "_id": { "$oid": "63429ff7de9f4a8994240fc1" }
+            },
+            {
+                "dateTemp": "2021-12-03",
+                "temp": 37,
+                "_id": { "$oid": "63429ff7d99f4a8f94240fc1" }
+            },
+            {
+                "dateTemp": "2021-12-04",
+                "temp": 37,
+                "_id": { "$oid": "63429ff0de9f4a8f94240fc1" }
+            },
+            {
+                "dateTemp": "2021-12-05",
+                "temp": 37,
+                "_id": { "$oid": "63429ff70e9f4a8f94240fc1" }
+            },
+            {
+                "dateTemp": "2022-10-11",
+                "temp": 37,
+                "_id": { "$oid": "63429ff7de9f4a8f94240fc1" }
+            }
+        ],
+        "__v": 3
+    },
+    {
+        "_id": { "$oid": "63429edc897d42ceaba2985f" },
+        "staff_id": { "$oid": "6278d8752aa467f9325d7675" },
+        "vaccine": [
+            {
+                "dateVac": "2021-01-01",
+                "typeVac": "AAA"
+            },
+            {
+                "dateVac": "2021-04-01",
+                "typeVac": "AAA"
+            }
+        ],
+        "datePositive": [
+            "2021-12-01",
+            "2021-12-02",
+            "2021-12-03",
+            "2021-12-04",
+            "2021-12-05"
+        ],
+        "tempBody": [
+            {
+                "dateTemp": "2021-12-01",
+                "temp": 38,
+                "_id": { "$oid": "63429ff7de9f4a8f94249fc1" }
+            },
+            {
+                "dateTemp": "2021-12-02",
+                "temp": 38,
+                "_id": { "$oid": "63429ff7de9f4a8994240fc1" }
+            },
+            {
+                "dateTemp": "2021-12-03",
+                "temp": 37,
+                "_id": { "$oid": "63429ff7d99f4a8f94240fc1" }
+            },
+            {
+                "dateTemp": "2021-12-04",
+                "temp": 37,
+                "_id": { "$oid": "63429ff0de9f4a8f94240fc1" }
+            },
+            {
+                "dateTemp": "2021-12-05",
+                "temp": 37,
+                "_id": { "$oid": "63429ff70e9f4a8f94240fc1" }
+            },
+            {
+                "dateTemp": "2022-10-11",
+                "temp": 37,
+                "_id": { "$oid": "63429ff7de9f4a8f94240fc1" }
+            }
+        ]
+    }
+]
