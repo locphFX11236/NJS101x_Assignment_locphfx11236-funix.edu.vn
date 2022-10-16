@@ -2,6 +2,7 @@ const WorkData = require('../models/workData');
 const WorkTime = require('../models/workTime');
 const AnnualLeave = require('../models/annualLeave');
 const handle = require('../util/handle');
+const staff = require('../models/staff');
 
 exports.getIndex = async (req, res, next) => {
     const staff_id = req.params.staff_id || req.body.staff_id;
@@ -12,9 +13,11 @@ exports.getIndex = async (req, res, next) => {
     let totalItems;
     let reqStaff;
 
+    if (!req.session.user) return res.redirect('/login');
+
     // Nạp thông tin staff
     if (req.session.user.isManager) {
-        Staff
+        staff
             .findOne({ '_id': staff_id })
             .then(staff => {
                 req.staff = staff;

@@ -34,8 +34,8 @@ const store = new MongoDBStore({
 
 // Chức năng upload
 const fileStorage = multer.diskStorage({
-    destination: (req, file, cb) => { cb(null, 'images') },
-    filename: (req, file, cb) => { cb(null, Date.now() + '-' + file.originalname) }
+    destination: (req, file, cb) => { cb(null, 'data/images') },
+    filename: (req, file, cb) => { cb(null, `${Date.now()}-${file.originalname}`) }
 }); // Tạo store với các phương thức xử lý file
 
 const fileFilter = (req, file, cb) => {
@@ -49,12 +49,12 @@ const fileFilter = (req, file, cb) => {
 
 // Thiết đặt sử dụng template
 app.set(
-    'view engine', // Khai báo sẽ sử dụng Template động cho view
-    'ejs' // Template động là package ejs
+    'view engine', // Khai báo sẽ sử dụng Template engine cho view
+    'ejs' // Template engine là file .ejs
 );
 app.set(
     'views', // Khai báo các view sẽ sử dụng template động
-    'views' // Tại file views ngang hàng với file app.js
+    './views' // Tại file views ngang hàng với file app.js
 );
 
 // Sử dụng các package
@@ -64,8 +64,8 @@ app.use(bodyParser.urlencoded(
 app.use(express.static(path.join(
     rootDir, // Đường dẫn đến file chứa file app.js, cụ thể là file ASM
     'public' // File chọn để truy cập tĩnh
-))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js)
-app.use('/data/images', express.static(path.join(rootDir, 'data', 'images'))); // Xữ lý file public tĩnh cho trình duyệt truy cập
+))); // Xữ lý file public tĩnh cho trình duyệt truy cập (là các file .css, .js), VD: http://localhost:3000/css/staff.css, lượt bỏ /public/
+app.use('/data', express.static(path.join(rootDir, 'data'))); // Xữ lý file tĩnh cho trình duyệt truy cập, VD: http://localhost:3000/data/images/1665915633155-boat.png
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')); // Dùng middleware xử lí file tải lên
 app.use(session({
     secret: 'my secret',
@@ -74,17 +74,11 @@ app.use(session({
     store: store
 })); // Sử dụng session để bảo mật Cookie
 app.use(csrfProtection); // Bảo vệ tấn công csrf
-app.use((req, res, next) => {
-    res.locals.isAuthenticated = req.session.isLoggedIn; // Biến xác thực người dùng có đăng nhập
-    res.locals.csrfToken = req.csrfToken(); // Biến csrfToken cho tất cả các view
-    next();
-}); // res.locals là biến cục bộ thêm vào tất cả các view
 app.use(flash()); // Sử dụng middleware flash trên đối tượng req dùng cho cả ứng dụng
 app.use((req, res, next) => { // Nếu là không phải là manager thì thêm 1 property staff vào req
     if (!req.session.user) { // Bỏ qua nếu không đăng nhập
         return next();
-    };
-    if (!req.session.user.isManager) { // Bỏ qua nếu không phải là nhân viên
+    } else if (!req.session.user.isManager) { // Bỏ qua nếu không phải là nhân viên
         return Staff
             .findOne({ 'user_id': req.session.user._id })
             .then(staff => {
@@ -95,9 +89,17 @@ app.use((req, res, next) => { // Nếu là không phải là manager thì thêm 
                 throw new Error(err);
             })
         ;
-    } else req.staff = {};
-    return next();
+    } else { // Nếu là quản lý
+        req.staff = {};
+        return next();
+    };
 });
+app.use((req, res, next) => {
+    res.locals.staff_id = req.staff ? req.staff._id : null;
+    res.locals.isAuthenticated = req.session.isLoggedIn; // Biến xác thực người dùng có đăng nhập
+    res.locals.csrfToken = req.csrfToken(); // Biến csrfToken cho tất cả các view
+    next();
+}); // res.locals là biến cục bộ thêm vào tất cả các view
 
 // Các Routes
 app.use(staffRoutes);

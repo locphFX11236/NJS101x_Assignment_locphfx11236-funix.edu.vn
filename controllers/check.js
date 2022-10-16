@@ -10,6 +10,8 @@ exports.getIndex = async (req, res, next) => {
     const user = req.session.user;
     const dateWork = handle.handleTime.D_M_YPrint();
 
+    if (!user) return res.redirect('/login');
+
     // Làm sạch data
     WorkTime
         .find({ 'staff_id': staff_id })
@@ -196,11 +198,26 @@ exports.confirmWork = async (req, res, next) => {
     ;
 };
 
+exports.deleteWork = async (req, res, next) => {
+    const workTime_id = req.body.workTime_id;
+    const staff_id = req.body.staff_id;
+    
+    return WorkTime
+        .deleteOne({ '_id': workTime_id })
+        .then(() => {
+            console.log('CONFIRMED TO WORK TIME!');
+            return res.redirect('/check/' + staff_id);
+        })
+        .catch(err => console.log('NOT CONFIRMED! ERROR: ', err))
+    ;
+};
+
 exports.getAL = async (req, res, next) => {
     const staff_id = req.params.staff_id;
     const user = req.session.user;
     let reqStaff;
-    // const dateWork = handle.handleTime.D_M_YPrint();
+
+    if (!user) return res.redirect('/login');
 
     if (req.session.user.isManager) {
         Staff

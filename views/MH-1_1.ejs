@@ -46,12 +46,20 @@
                             <p>Tại: <%= workTime.at %></p>
                             <p><%= workTime.confirm ? 'Đã xác nhận' : 'Chưa xác nhận' %></p>
                             <% if (user.isManager && workTime.confirm === false && workTime.begin !== 'Chưa ghi nhận!') { %>
-                                <form action="/confirmWork" method="post">
-                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                    <input type="hidden" value="<%= workTime.staff_id._id %>" name="staff_id">
-                                    <input type="hidden" name="workTime_id" value="<%= workTime._id %>">
-                                    <button class="btn" type="submit">Xác nhận làm việc</button>
-                                </form>
+
+                            <form action="/confirmWork" method="post">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" value="<%= workTime.staff_id._id %>" name="staff_id">
+                                <input type="hidden" name="workTime_id" value="<%= workTime._id %>">
+                                <button class="btn" type="submit">Xác nhận làm việc</button>
+                            </form>
+                            <form action="/deleteWork" method="post">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <input type="hidden" value="<%= workTime.staff_id._id %>" name="staff_id">
+                                <input type="hidden" name="workTime_id" value="<%= workTime._id %>">
+                                <button class="btn" type="submit">Xóa</button>
+                            </form>
+
                             <% } %>
                         </div>
                     <% } %>

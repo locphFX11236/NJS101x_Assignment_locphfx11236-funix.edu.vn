@@ -9,11 +9,11 @@
         <section class="grid">
             <div class="card">
                 <h3><%= (!User.isManager) ? 'Đăng ký nghĩ phép' : 'Thông tin nghĩ phép' %></h3>
-                <p>Số ngày nghĩ phép còn lại: <%= Staff.annualLeave %> ngày</p>
                 <% if (!User.isManager) { %>
                     <h4>Tên: <%= Staff.name %></h4>
                     <p>Bạn <%= (Staff.annualLeave <= 0) ? 'không thể' : 'có thể' %> đăng ký nghĩ phép</p>
                 <% } %>
+                <p>Số ngày nghĩ phép còn lại: <%= Staff.annualLeave %> ngày</p>
                 <% if (!User.isManager) { %>
                     <form action="/post-annualLeave" method="post">
                         <div class="form-control">

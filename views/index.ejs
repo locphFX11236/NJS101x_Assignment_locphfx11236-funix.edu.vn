@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <%- include('includes/navigation.ejs', { user: user, staffs: staffs } ) %>
+    <%- include('includes/navigation.ejs') %>
     <h2 class="centered"><%= user.isManager ? "Xác nhận thông tin nhân viên" : "" %></h2>
     <% if (staffs.length > 0) { %>
 

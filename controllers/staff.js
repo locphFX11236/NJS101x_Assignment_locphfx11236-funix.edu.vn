@@ -6,8 +6,9 @@ const fileHelper = require('../util/deleteFile');
 exports.getIndex = (req, res, next) => {
     const user = req.session.user;
     let findStaff;
-    
+
     if (!user) return res.redirect('/login');
+
     if (user.isManager) {
         findStaff = { "managerId": user.staffId };
     } else {
@@ -22,7 +23,7 @@ exports.getIndex = (req, res, next) => {
                 {
                     user: user,
                     staffs: staffs,
-                    pageTitle: user.isManager ? 'Nhân viên' : 'Home', // Page Title
+                    pageTitle: user.isManager ? 'Nhân viên' : 'Trang chủ', // Page Title
                     path: '/' // Để truy cập view trên trình duyệt
                 }
             );
@@ -39,6 +40,8 @@ exports.getIndex = (req, res, next) => {
 exports.getStaffWithId = async (req, res, next) => {
     const _id = req.params._id;
     const user = req.session.user;
+
+    if (!user) return res.redirect('/login');
 
     return Staff
         .findById(_id)
@@ -80,7 +83,7 @@ exports.postEditStaff = (req, res, next) => {
                     path: '/staff/:_id',
                     editing: true,
                     hasError: true,
-                    staffImg: { ...staff, imageUrl: updatedImageUrl },
+                    staff: { ...staff },
                     errorMessage: errors.array()[0].msg,
                     validationErrors: errors.array()
                 });
@@ -96,7 +99,7 @@ exports.postEditStaff = (req, res, next) => {
                     path: '/staff/:_id',
                     editing: false,
                     hasError: true,
-                    staffImg: { ...staff, imageUrl: updatedImageUrl },
+                    staff: { ...staff },
                     errorMessage: 'Attached file is not an image.',
                     validationErrors: []
                 });

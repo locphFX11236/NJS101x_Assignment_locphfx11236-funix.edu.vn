@@ -9,7 +9,9 @@ const { PDFFile } = require('../util/exportPDF');
 exports.getIndex = (req, res, next) => {
     const staff_id = req.params.staff_id;
     const user = req.session.user;
-    
+
+    if (!user) return res.redirect('/login');
+
     return Covid
         .findOne({ 'staff_id': staff_id })
         .then(cov => {
