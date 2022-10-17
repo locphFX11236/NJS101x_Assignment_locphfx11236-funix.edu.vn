@@ -15,9 +15,9 @@
             </div>
             <div class="card">
                 <form class="card" action="/post-search-month?page=<%= oldState.showPage %>&item=<%= oldState.item %>" method="post">
-                    <label><strong>Lương tháng:</strong></label>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <input type="hidden" name="staff_id" value="<%= Staff._id %>">
+                    <label><strong>Lương tháng:</strong> <%= isQuery ? '' : '(auto this month)' %></label>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+                    <input type="hidden" name="staff_id" value="<%= Staff._id %>"/>
                     <input type="text" name="monthSearch" value="<%= oldState.month %>" />
                     <button type="submit">Search</button>
                 </form>
@@ -42,7 +42,7 @@
                 <% } %>
             </div>
         </div>
-        <h4>Chi tiết thông tin giờ làm</h4>
+        <p><strong>Chi tiết thông tin giờ làm</strong> <%= isQuery ? '' : '(all session)' %></p>
         <div class="card">
         <% if (sessionData.length > 0) { %>
 
@@ -57,7 +57,7 @@
                     <span>- Nơi làm việc: <%= s.at %></span><br/>
                     <span>- Thời gian làm việc của phiên: <%= s.workTime %></span><br/>
                     <% const D = dateData.find(d => d.date === s.date); %>
-                    <% if (s.countIndex === D.lastSessionIndex) {%>
+                    <% if (s.countIndex === D.lastSessionIndex) { %>
 
                     <hr/>
                     <span>- Thời gian làm thêm trong ngày: <%= D.oT %></span><br/>

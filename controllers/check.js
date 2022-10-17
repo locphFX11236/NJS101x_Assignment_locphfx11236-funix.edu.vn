@@ -205,7 +205,7 @@ exports.deleteWork = async (req, res, next) => {
     return WorkTime
         .deleteOne({ '_id': workTime_id })
         .then(() => {
-            console.log('CONFIRMED TO WORK TIME!');
+            console.log('DELETE TO WORK TIME!');
             return res.redirect('/check/' + staff_id);
         })
         .catch(err => console.log('NOT CONFIRMED! ERROR: ', err))

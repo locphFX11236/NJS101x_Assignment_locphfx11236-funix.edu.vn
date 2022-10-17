@@ -5,11 +5,12 @@ const handle = require('../util/handle');
 const staff = require('../models/staff');
 
 exports.getIndex = async (req, res, next) => {
-    const staff_id = req.params.staff_id || req.body.staff_id;
+    const staff_id = req.params.staff_id;
     const date = new Date();
+    const isQuery = req.query.month ? true : false;
     const defaultShowPage = +req.query.page || 1;
     const ITEMS_PER_PAGE = +req.query.item || 2;
-    const monthSalary = req.query.month ? req.query.month : `${date.getFullYear()}-${date.getMonth() + 1}`;
+    const monthSalary = isQuery ? req.query.month : `${date.getFullYear()}-${date.getMonth() + 1}`;
     let totalItems;
     let reqStaff;
 
@@ -69,11 +70,13 @@ exports.getIndex = async (req, res, next) => {
             , // Render view
         ])
         .then(data => {
-            const dateArray = Array.from( new Set( data[0].map(d => d.date) ) );
+            const dateArray1 = Array.from( new Set( data[0].map(d => d.date) ) );
+            const dateArray2 = dateArray1.filter(d => d.includes(monthSalary));
+            const dateArray = isQuery ? dateArray2 : dateArray1;
             const sessionData = handle.handleSalary.getSessionData(dateArray, data[1]); // Render
             const dateData = handle.handleSalary.getDateData(dateArray, data[0]);
             const monthData = handle.handleSalary.getMonthData(monthSalary, dateData);
-            // console.log({dateData: dateData, sessionData: sessionData, monthData: monthData})
+            // console.log({dateData: dateData, sessionData: sessionData, monthData: monthData});
             return {dateData: dateData, sessionData: sessionData, monthData: monthData};
         })
         .then(data => {
@@ -84,6 +87,7 @@ exports.getIndex = async (req, res, next) => {
                     dateData: data.dateData,
                     monthData: data.monthData,
                     Staff: reqStaff,
+                    isQuery: isQuery,
                     pageTitle: 'Thông tin làm', // Page Title
                     path: '/salary/:staff_id', // Thuộc tính path truyền vào
                     currentPage: defaultShowPage,

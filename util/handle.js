@@ -108,7 +108,7 @@ class handleSalary {
                     workTime: d.workTime,
                     totalWT: d.totalWorkTime,
                     annuArr: annuArr,
-                    countIndex: i,
+                    countIndex: i, // Đánh số tất cả data
                 };
                 i++;
                 return A;
@@ -151,7 +151,7 @@ class handleSalary {
                 totalWT: A[index].totalWT,
                 hourToSalary: hourToSalary,
                 annu: annu,
-                lastSessionIndex: A[index].countIndex,
+                lastSessionIndex: A[index].countIndex, // Nhận số đếm cuối trong cùng ngày
             };
             return B;
         });
